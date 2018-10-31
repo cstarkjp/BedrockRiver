@@ -1,0 +1,1424 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Sinuous}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{Table of Contents}\label{table-of-contents}
+
+{1~~}Sinuosity model notes
+
+{1.1~~}Python setup
+
+{1.2~~}Definition of terms
+
+{1.3~~}Basic equations
+
+{1.4~~}Bend radius of curvature
+
+{1.5~~}Bend excess speed
+
+{1.6~~}Corner velocity
+
+{1.7~~}Hydraulic geometry and flow speed
+
+{1.8~~}Bedrock wear
+
+{1.9~~}Numerical exploration
+
+{1.10~~}Ensemble solutions
+
+    \section{\emph{Sinuosity} model notes}\label{sinuosity-model-notes}
+
+    \subsection{Python setup}\label{python-setup}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{sinuosity}
+        \PY{k+kn}{import} \PY{n+nn}{sympy} \PY{k}{as} \PY{n+nn}{sy}
+        \PY{n}{sy}\PY{o}{.}\PY{n}{init\PYZus{}printing}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k+kn}{from} \PY{n+nn}{symbols} \PY{k}{import} \PY{o}{*}
+        \PY{n}{sm} \PY{o}{=} \PY{n}{sinuosity}\PY{o}{.}\PY{n}{model}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{sm}\PY{o}{.}\PY{n}{get\PYZus{}params}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}3}]:}
+    
+    $$\left \{ C : 0.0316227766016838, \quad L : 1000.0, \quad \Omega_{r} : 20.0, \quad Q : 100.0, \quad \beta_{0} : 0.005, \quad \chi : 0, \quad d : 2.76, \quad d_{i} : 30.0, \quad \epsilon_{r} : 0.1, \quad \eta : 1.0, \quad \mu : 1.0, \quad \nu : 1.0, \quad \theta : 1.0471975511966, \quad u : 3.125, \quad u_{c} : 6.0, \quad u_{i} : 5.0, \quad w : 10.0\right \}$$
+
+    
+
+    \subsection{Definition of terms}\label{definition-of-terms}
+
+    \begin{eqnarray}
+     &x  = \text{downstream axis}  \qquad&\dots\quad x\geq0 \\
+     &y  = \text{transverse axis}   \qquad&\dots\quad +\infty>y>-\infty \\
+     &z  = \text{vertical axis}     \qquad&\dots\quad z\geq0 \\
+     &c_{+}  = \text{channel left corner in +y direction} 
+                       \qquad&\dots\quad +\infty>c_{+}(x,t)>-\infty \\
+     &c_{-}  = \text{channel right corner in -y direction} 
+                       \qquad&\dots\quad +\infty>c_{-}(x,t)>-\infty \\
+     &h  = z\,\,\text{coordinate of (flat, horizontal) channel bed}
+                       \qquad&\dots\quad +\infty>h(x,t)>-\infty \\
+     &w  = \text{channel width}  
+                       \qquad&\dots\quad w(x,t)>0 \\
+     &m  = y\,\,\text{coordinate of channel midline}
+                       \qquad&\dots\quad +\infty>m(x,t)>-\infty \\
+     &s  = \text{distance along channel midline}  
+                       \qquad&\dots\quad s(x,t)\geq 0 \\
+     &L  = \text{length scale (half wavelength) of meandering} 
+                       \qquad&\dots\quad L> 0 \\
+     &R  = \text{radius of bend curvature} 
+                       \qquad&\dots\quad R(x,t)> 0 \\
+     &\psi  = \text{angle subtended by bend apex} 
+                       \qquad&\dots\quad \psi(x,t)> 0 \\
+     &\chi  = \text{sinuosity}  
+                       \qquad&\dots\quad \chi(x,t)\geq 0 
+\end{eqnarray}
+
+    \begin{eqnarray}
+     &\xi_z  = \text{bed bedrock wear rate} 
+                       \qquad&\dots\quad \xi_z(x,t) \\
+     &\xi_{y\pm}  = \text{wall bedrock wear rates (}+\text{left,}-\text{right)} 
+                       \qquad&\dots\quad \xi_{y\pm}(x,t) \\
+     &\dfrac{\mathrm{d}\vec{c}_\pm}{\mathrm{d}t}  = \text{corner velocities} 
+                       \qquad&\dots\quad \vec{c}_\pm(x,t) \\
+     &\dfrac{\mathrm{d}\vec{m}}{\mathrm{d}t}  = \text{channel erosion rate 3-vector} 
+                       \qquad&\dots\quad \vec{m}(x,t) \\
+     &\theta  = \text{wall angle from horizontal} 
+                       \qquad&\dots\quad \pi/2\geq\theta> 0 \\
+     &\phi  = \text{corner vector angle from vertical} 
+                       \qquad&\dots\quad \pi/2 > \phi(c_\pm) > -\pi/2
+\end{eqnarray}
+
+    \begin{eqnarray}
+     &Q  = \text{volume water discharge} 
+                       \qquad&\dots\quad Q>0 \\
+     &A  = \text{flow cross-sectional area} 
+                       \qquad&\dots\quad A>0 \\
+     &g  = \text{acceleration by gravity} 
+                       \qquad&\dots\quad g = 9.81 \,\mathrm{m}\,\mathrm{s}^2 \\
+     &f  = \text{boundary friction factor} 
+                       \qquad&\dots\quad f=0.01 \\
+     &C  = \text{Chézy friction coefficient} 
+                      \qquad&\dots\quad C^2 \approx 10^{-3} \,\mathrm{s}^2\,\mathrm{m}^{-1} \\
+     &\rho  = \text{fluid density} 
+                       \qquad&\dots\quad \rho \approx 1000 \,\mathrm{kg}\,\mathrm{m}^{-3} \\
+     &\beta_0  = \text{channel slope angle at }\chi=0 
+                       \qquad&\dots\quad \beta_0 >0 \\
+     &\tau  = \text{mean boundary shear stress} 
+                       \qquad&\dots\quad \tau(x,t)>0 \\
+     &p  = \text{flow "wetted" perimeter} 
+                       \qquad&\dots\quad p(x,t)>0 \\
+     &u  = \text{flow speed} 
+                       \qquad&\dots\quad u(x,t)>0 \\
+     &d  = \text{flow depth} 
+                       \qquad&\dots\quad d(x,t)>0 \\
+     &\epsilon  = \text{bend excess speed perturbation} 
+                       \qquad&\dots\quad 1\gg\epsilon(x,t)\geq 0 \\
+     &\epsilon_r  = \text{reference bend excess perturbation} 
+                       \qquad&\dots\quad \epsilon_r > 0 \\
+     &\Omega  = \text{flow width-depth ratio} 
+                       \qquad&\dots\quad \Omega(x,t)>0 \\
+     &\Omega_r  = \text{reference width-depth ratio} 
+                       \qquad&\dots\quad \Omega_r=20
+\end{eqnarray}
+
+    \begin{eqnarray}
+     &\mu  =  \text{bedrock wear rate}\Leftrightarrow \text{erodibility}  
+                       \qquad&\dots\quad \mu>0 \\
+     &\eta  = \text{wall wear rate relative to bed} 
+                       \qquad&\dots\quad \eta \approx 10 \\
+     &u_c  = \text{threshold flow speed for bedrock wear} 
+                       \qquad&\dots\quad u_c>0 \\
+     &\nu  = \text{wear model flow speed exponent} 
+                       \qquad&\dots\quad \nu = 1
+\end{eqnarray}
+
+    \subsection{Basic equations}\label{basic-equations}
+
+    Channel width:
+
+\begin{equation}
+    w = c_{+} + c_{-}  \quad\dots\,\, w > 0
+\end{equation}
+
+Channel midline:
+
+\begin{equation}
+    m = \dfrac{\left| c_{+} - c_{-} \right|}{2}
+      \quad\dots\,\, c \geq 0
+\end{equation}
+
+Sinuosity:
+
+\begin{equation}
+    \chi = \dfrac{2m}{L} 
+    = \dfrac{\left| c_{+} - c_{-} \right|}{L} 
+       \quad\dots\,\, \chi \geq 0
+\end{equation}
+
+where \(\chi=0\) is a straight channel.
+
+Streamwise distance \(s\) along channel centerline:
+
+\begin{equation}\displaystyle
+    s = \int_0^x \left( \chi(l)+1 \right) \,\mathrm{d}l
+    \quad\Leftrightarrow\quad
+    \frac{\mathrm{d}s}{\mathrm{d}x} = \chi+1
+\end{equation}
+
+Streamwise channel gradient \(\nabla_s h\):
+
+\begin{equation}
+    \dfrac{\partial{h}}{\partial{s}} 
+    = \dfrac{1}{\chi+1}\dfrac{\partial{h}}{\partial{x}}
+\end{equation}
+
+    Corner erosion rate 3-vector
+
+\begin{equation}
+    \dfrac{\partial{\vec{c}}}{\partial{t}}
+    \equiv 
+    \begin{pmatrix}
+        \partial{c_{+}}/\partial{t} \\
+        \partial{c_{-}}/\partial{t} \\
+        \partial{h}/\partial{t}
+    \end{pmatrix}
+    = f\!\left(c_{+},\,c_{-},\, \chi, \dfrac{\partial{h}}{\partial{x}}\right)
+\end{equation}
+
+Channel erosion rate 3-vector
+
+\begin{equation}
+    \dfrac{\partial{\vec{m}}}{\partial{t}}
+    \equiv 
+    \begin{pmatrix}
+        \partial{w}/\partial{t} \\
+        \partial{m}/\partial{t} \\
+        \partial{h}/\partial{t}
+    \end{pmatrix}
+    = f\!\left(w,\, m,\, \chi, \dfrac{\partial{h}}{\partial{x}}\right)
+\end{equation}
+
+\begin{equation}
+    \dfrac{\partial{w}}{\partial{t}} 
+    = \dfrac{\partial{c_{+}}}{\partial{t}} + \dfrac{\partial{c_{-}}}{\partial{t}}
+\end{equation}
+
+\begin{equation}
+    \dfrac{\partial{m}}{\partial{t}} 
+    = \dfrac{1}{2} \left(
+    \dfrac{\partial{c_{+}}}{\partial{t}} - \dfrac{\partial{c_{-}}}{\partial{t}}
+    \right)
+    \dfrac{ c_{+}-\,c_{-}}{\left|c_{+}-\,c_{-}\right|}
+    = \dfrac{1}{2} \left(
+    \dfrac{\partial{c_{+}}}{\partial{t}} - \dfrac{\partial{c_{-}}}{\partial{t}}
+    \right)
+    \,\mathrm{sgn}\left( c_{+}-\,c_{-} \right)
+\end{equation}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{midline\PYZus{}eqn} \PY{o}{=} \PY{n}{sy}\PY{o}{.}\PY{n}{Eq}\PY{p}{(}\PY{n}{f\PYZus{}m}\PY{p}{,} \PY{n}{sy}\PY{o}{.}\PY{n}{Abs}\PY{p}{(}\PY{n}{f\PYZus{}c\PYZus{}m}\PY{o}{\PYZhy{}}\PY{n}{f\PYZus{}c\PYZus{}p}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{n}{midline\PYZus{}eqn}
+        \PY{n}{sy}\PY{o}{.}\PY{n}{Eq}\PY{p}{(}\PY{n}{sy}\PY{o}{.}\PY{n}{diff}\PY{p}{(}\PY{n}{midline\PYZus{}eqn}\PY{o}{.}\PY{n}{args}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{t}\PY{p}{)}\PY{p}{,}\PY{n}{sy}\PY{o}{.}\PY{n}{diff}\PY{p}{(}\PY{n}{midline\PYZus{}eqn}\PY{o}{.}\PY{n}{args}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{t}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}4}]:}
+    
+    $$m{\left (x,t \right )} = \frac{\left|{\operatorname{c_{+}}{\left (x,t \right )} - \operatorname{c_{-}}{\left (x,t \right )}}\right|}{2}$$
+
+    
+\texttt{\color{outcolor}Out[{\color{outcolor}4}]:}
+    
+    $$\frac{\partial}{\partial t} m{\left (x,t \right )} = \frac{\left(\frac{\partial}{\partial t} \operatorname{c_{+}}{\left (x,t \right )} - \frac{\partial}{\partial t} \operatorname{c_{-}}{\left (x,t \right )}\right) \operatorname{sign}{\left (\operatorname{c_{+}}{\left (x,t \right )} - \operatorname{c_{-}}{\left (x,t \right )} \right )}}{2}$$
+
+    
+
+    \subsection{Bend radius of curvature}\label{bend-radius-of-curvature}
+
+    We now seek the radius of curvature \(R\) in terms of centerline
+deflection \(y\) or sinuosity \(\chi\), and bend length scale \({L}\)
+(note: this symbol represents half-wavelength, not wavelength).
+
+\begin{eqnarray}
+    &R \sin\psi &= \dfrac{{L}}{2} \\
+    &R \cos\psi +y &= R 
+\end{eqnarray}
+
+\begin{equation}
+    \cos\psi = \dfrac{R-y}{R} = 1-\dfrac{y}{R}
+\end{equation}
+
+\begin{equation}
+    \sin^2\psi + \cos^2\psi
+    = \dfrac{{L}^2}{4R^2} + \left(1-\dfrac{y}{R}\right)^2
+    = 1
+\end{equation}
+
+\begin{equation}
+    \dfrac{{L}^2}{4} + (R-y)^2 = R^2
+\end{equation}
+
+\begin{equation}
+    R = \dfrac{y^2+\tfrac{1}{4}{L}^2}{2y} 
+\end{equation}
+
+When \(y=\dfrac{{L}}{2}\), we have a circle centred symmetrically such
+that \(R=y\):
+
+\begin{equation}
+    R = \dfrac{({L}/2)^2+{L}^2/4}{2({L}/2)} 
+    = \dfrac{{L}}{2}
+\end{equation}
+
+Centerline deflection \(y\) can be mapped into sinuosity through
+\(y = \chi{L}/2\), which yields:
+
+\begin{equation}
+    R = \dfrac{\left(\tfrac{1}{2}\chi{L}\right)^2+\tfrac{1}{4}{L}^2}{\chi{L}} 
+    = \dfrac{{L}}{4} \left(\dfrac{\chi^2+1}{\chi} \right)
+\end{equation}
+
+giving
+
+\begin{equation}
+    R = \dfrac{{L}}{4} \left(\chi+\dfrac{1}{\chi} \right)
+\end{equation}
+
+This centerline function has a minimum for constant \({L}\) at:
+
+\begin{equation}
+    \dfrac{\mathrm{d}R}{\mathrm{d}\chi}
+    = \dfrac{{L}}{4} \left(1-\dfrac{1}{\chi^2} \right)
+    = 0
+    \qquad\Rightarrow\qquad
+    \chi=1 \,,\quad R = \dfrac{{L}}{2}
+\end{equation}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{sinuosity}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{plot\PYZus{}R\PYZus{}chi}\PY{p}{(}\PY{n}{sm}\PY{p}{,} \PY{n}{L}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_17_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Bend excess speed}\label{bend-excess-speed}
+
+    \emph{Ansatz:} flow speed excess \(\Delta{u}\) along the outer bank
+relative to centerline flow speed \(u\) is proportional channel
+half-width \(w/2\) relative to radius of curvature \(R\). Defining this
+ratio as \(\epsilon\), we have:
+
+\begin{equation}
+    \epsilon = \dfrac{\Delta{u}}{u} \,\propto\, \dfrac{w}{2R}
+\end{equation}
+
+giving:
+
+\begin{equation}
+   \epsilon = \dfrac{2 w \chi}{{L}\left(\chi^2+1\right)}
+\end{equation}
+
+This excess speed function has a maximum for constant \(\omega\) given
+by:
+
+\begin{equation}
+    \dfrac{\mathrm{d}\epsilon}{\mathrm{d}\chi}
+    = \dfrac{2w}{L} \left(\dfrac{1}{\chi^2+1}
+                   -\dfrac{2\chi^2}{(\chi^2+1)^2} \right)
+    = 0
+    \qquad\Rightarrow\qquad
+    2\chi^2 = \chi^2+1
+\end{equation}
+
+giving:
+
+\begin{equation}
+    \chi=1 \,,\quad \epsilon = \dfrac{w}{{L}}
+\end{equation}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{sinuosity}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{plot\PYZus{}epsilon\PYZus{}chi}\PY{p}{(}\PY{n}{sm}\PY{p}{,} \PY{n}{w}\PY{o}{=}\PY{l+m+mi}{10}\PY{p}{,}\PY{n}{L}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Corner velocity}\label{corner-velocity}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{sinuosity}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{plot\PYZus{}corner\PYZus{}fig}\PY{p}{(}\PY{n}{sm}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    We seek a value for \(\phi\) knowing \({\xi_y}\), \({\xi_z}\), and
+\(\theta\). The cosine rule gives:
+
+\begin{equation}
+    {{\xi_z}^2}{\sec^2\!\phi}
+      = \displaystyle
+      {{\xi_y}^2}{{\mathrm{cosec}^2}\theta} 
+       + {{\xi_z}^2}{{\mathrm{cosec}^2}\theta}
+       - {2{\xi_y}{\xi_z}{{\,\mathrm{cosec}^2}\theta}\cos\theta}
+\end{equation}
+
+which solves for \(\phi\) up to a sign ambiguity.
+
+A simpler solution that retains the sign (which indicates if the channel
+bank is moving outwards or inwards, aka widening of narrowing if
+symmetric) is:
+
+\begin{equation}
+    {\xi_z} \tan\phi
+      = {\xi_y} \,\mathrm{cosec}\,\theta - {\xi_z}\cot\theta
+\end{equation}
+
+and so:
+
+\begin{equation}
+    \phi_\pm
+      = \arctan\left(
+      \dfrac{\xi_{y\pm}}{\xi_z} \,\mathrm{cosec}\,\theta - \cot\theta
+              \right)
+\end{equation}
+
+where the \(\pm\) subscript indicates left (\(+\)) or right (\(-\))
+corners.
+
+The corner velocites \({\mathrm{d}\vec{c}_\pm}/{\mathrm{d}t}\) are now
+known in terms of \(\phi_\pm\) and \(\xi_{z}\):
+
+\begin{equation}
+    \dfrac{\mathrm{d}\vec{c}_\pm}{\mathrm{d}t} 
+    \equiv 
+    \begin{pmatrix}
+        \mathrm{d}{c_\pm}/\mathrm{d}{t} \\
+        \mathrm{d}{h}/\mathrm{d}{t}
+    \end{pmatrix}
+    \,=\, {\xi_z} \begin{pmatrix}
+        \tan\phi_\pm \\
+        1
+      \end{pmatrix}
+    \,=\, \begin{pmatrix}
+        {\xi_{y\pm}} \,\mathrm{cosec}\,\theta  - {\xi_z}\cot\theta \\
+        {\xi_z} 
+      \end{pmatrix}
+\end{equation}
+
+All that remains is to define \(\xi_{y+}\), \(\xi_{y-}\), and
+\(\xi_{z}\) in terms of bedrock wear processes, channel hydraulics,
+channel geometry, and channel gradient.
+
+Since the bank angle \(0<\theta\leq\pi/2\) is fixed, and the erosion
+rates are positive \(\xi_z>0\), \(\xi_y>0\), it follows that channel
+widening versus narrowing is determined by the sign of the numerator:
+
+\begin{eqnarray}
+    \xi_y &> \xi_z\cos\theta &   \quad\dots\,\,\text{widening} \\
+    \xi_y &= \xi_z\cos\theta &   \quad\dots\,\,\text{stable} \\
+    \xi_y &< \xi_z\cos\theta &   \quad\dots\,\,\text{narrowing} 
+\end{eqnarray}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{c+c1}{\PYZsh{} sinuosity.plot.plot\PYZus{}dydt\PYZus{}xiz(sm)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{c+c1}{\PYZsh{} sinuosity.plot.plot\PYZus{}dydt\PYZus{}xiy(sm)}
+\end{Verbatim}
+
+
+    \subsection{Hydraulic geometry and flow
+speed}\label{hydraulic-geometry-and-flow-speed}
+
+    The next challenge is to find algebraic/trigonometric forms for mean
+flow speed \(u\) and flow depth \(d\). The place to start is with
+channel cross-sectional area \(A\), which is a function of channel base
+(geometric) width \(w\) and flow depth:
+
+\begin{equation}
+    A = d (w + d {\,\mathrm{cot}\,} \theta)
+\end{equation}
+
+and which is related to water-volume throughput \(Q\) and flow speed:
+
+\begin{equation}
+    A = Q/u
+\end{equation}
+
+So we have a "geometric" function for flow speed in terms of flow depth:
+
+\begin{equation}
+    u = \dfrac{Q}{w d + d^2{\,\mathrm{cot}\,} \theta}
+\end{equation}
+
+We need another equation to disambiguate \(u\) and \(d\).
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{n}{sm}\PY{o}{.}\PY{n}{u\PYZus{}geometric\PYZus{}eqn}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}10}]:}
+    
+    $$u = \frac{Q \tan{\left (\theta \right )}}{d \left(d + w \tan{\left (\theta \right )}\right)}$$
+
+    
+
+    Assuming subcritical, steady flow, the mean bed shear stress \(\tau\)
+averaged across the channel cross-sectional perimeter \(p\), for a
+channel centerline (energy slope) angle \(\beta\), and with water
+density \(\rho\) and gravity \(g\), is:
+
+\begin{equation}
+    p\tau = \rho g A \sin\beta
+\end{equation}
+
+where
+
+\begin{equation}
+    p =  w  + 2 d {\,\mathrm{cosec}\,} \theta
+\end{equation}
+
+The mean boundary shear stress can be estimated in several ways, and the
+simplest is to assume Chézy friction, with a friction factor \(f\):
+
+\begin{equation}
+    \tau = f \rho u^2 \,\,,\quad f = g C^2 
+    \quad\Rightarrow\qquad
+    \tau = \rho g C^2 u^2
+\end{equation}
+
+In passing, it's worth noting that typical values here are \(f = 0.01\)
+and \(C^2 = 10^{-3}\,\mathrm{s}^{2}\,\mathrm{m}^{-1}\).
+
+Combining to eliminate \(\tau\):
+
+\begin{equation}
+    \left(w  + 2 d {\,\mathrm{cosec}\,} \theta\right)\rho g C^2 u^2
+    = \rho g \dfrac{Q}{u} \sin\beta
+\end{equation}
+
+which rearranges to give a second, "dynamic", function for flow speed in
+terms of flow depth:
+
+\begin{equation}
+     u^3
+    = \dfrac{Q \sin\beta}
+            { C^2(w  + 2 d {\,\mathrm{cosec}\,} \theta)}
+\end{equation}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{sm}\PY{o}{.}\PY{n}{ucubed\PYZus{}dynamic\PYZus{}eqn}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}11}]:}
+    
+    $$u^{3} = \frac{Q \sin{\left (\beta_{0} \right )}}{C^{2} \left(\chi + 1\right) \left(\frac{2 d}{\sin{\left (\theta \right )}} + w\right)}$$
+
+    
+
+    Rearranging the dynamic equation, we can write "dynamic" flow depth as:
+
+\begin{equation}
+    d = \left(\dfrac{Q \sin\beta}{C^2 u^3} - w\right)\dfrac{\sin\theta}{2}
+\end{equation}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{sm}\PY{o}{.}\PY{n}{d\PYZus{}dynamic\PYZus{}eqn}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}12}]:}
+    
+    $$d = - \frac{w \sin{\left (\theta \right )}}{2} + \frac{Q \sin{\left (\beta_{0} \right )} \sin{\left (\theta \right )}}{2 C^{2} u^{3}}$$
+
+    
+
+    Similarly, rearranging the flow geometry equation we have:
+
+\begin{equation}
+    (u {\,\mathrm{cot}\,}\theta) d^2 + u w d - Q = 0
+\end{equation}
+
+which solves to give:
+
+\begin{equation}
+    d = \dfrac{ - u w \pm \sqrt{u^2 w^2 + 4 u Q{\,\mathrm{cot}\,}\theta }}
+              {2 u {\,\mathrm{cot}\,}\theta}
+\end{equation}
+
+Taking the positive solution gives a "geometric" solution for flow
+depth:
+
+\begin{equation}
+    d = \dfrac{w\tan\theta}{2} \left(
+     \sqrt{1 + \dfrac{4Q}{w^2 u \tan\theta} }
+        - 1 \right)
+\end{equation}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{sm}\PY{o}{.}\PY{n}{d\PYZus{}geometric\PYZus{}eqn}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}13}]:}
+    
+    $$d = \frac{\left(- \sqrt{u} w + \sqrt{\frac{4 Q}{\tan{\left (\theta \right )}} + u w^{2}}\right) \tan{\left (\theta \right )}}{2 \sqrt{u}}$$
+
+    
+
+    Combining the geometric and dynamic equations for \(d\), and
+rearranging, we get a sixth-order polynomial in \(d\):
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{n}{sm}\PY{o}{.}\PY{n}{d\PYZus{}polynomial\PYZus{}eqn}
+         \PY{n}{sy}\PY{o}{.}\PY{n}{expand}\PY{p}{(}\PY{n}{sm}\PY{o}{.}\PY{n}{d\PYZus{}polynomial\PYZus{}eqn}\PY{p}{)}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}14}]:}
+    
+    $$- C^{2} Q^{2} \left(\chi + 1\right) \left(2 d + w \sin{\left (\theta \right )}\right) \tan^{3}{\left (\theta \right )} + d^{3} \left(d + w \tan{\left (\theta \right )}\right)^{3} \sin{\left (\beta_{0} \right )} \sin{\left (\theta \right )} = 0$$
+
+    
+\texttt{\color{outcolor}Out[{\color{outcolor}14}]:}
+    
+    $$- 2 C^{2} Q^{2} \chi d \tan^{3}{\left (\theta \right )} - C^{2} Q^{2} \chi w \sin{\left (\theta \right )} \tan^{3}{\left (\theta \right )} - 2 C^{2} Q^{2} d \tan^{3}{\left (\theta \right )} - C^{2} Q^{2} w \sin{\left (\theta \right )} \tan^{3}{\left (\theta \right )} + d^{6} \sin{\left (\beta_{0} \right )} \sin{\left (\theta \right )} + 3 d^{5} w \sin{\left (\beta_{0} \right )} \sin{\left (\theta \right )} \tan{\left (\theta \right )} + 3 d^{4} w^{2} \sin{\left (\beta_{0} \right )} \sin{\left (\theta \right )} \tan^{2}{\left (\theta \right )} + d^{3} w^{3} \sin{\left (\beta_{0} \right )} \sin{\left (\theta \right )} \tan^{3}{\left (\theta \right )} = 0$$
+
+    
+
+    Combining the geometric and dynamic equations for \(u\), and
+rearranging, we get a sixth-order polynomial in \(\sqrt{u}\):
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{n}{sm}\PY{o}{.}\PY{n}{u\PYZus{}polynomial\PYZus{}eqn}
+         \PY{n}{sy}\PY{o}{.}\PY{n}{Eq}\PY{p}{(}\PY{n}{sy}\PY{o}{.}\PY{n}{expand}\PY{p}{(}\PY{n}{sm}\PY{o}{.}\PY{n}{u\PYZus{}polynomial\PYZus{}eqn}\PY{o}{.}\PY{n}{args}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{/}\PY{n}{sy}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{u}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}15}]:}
+    
+    $$64 Q^{2} \left(- C^{2} u^{3} \left(\chi + 1\right) \left(\sqrt{u} w \sin{\left (\theta \right )} - \left(\sqrt{u} w - \sqrt{\frac{4 Q}{\tan{\left (\theta \right )}} + u w^{2}}\right) \tan{\left (\theta \right )}\right) + Q \sqrt{u} \sin{\left (\beta_{0} \right )} \sin{\left (\theta \right )}\right) = 0$$
+
+    
+\texttt{\color{outcolor}Out[{\color{outcolor}15}]:}
+    
+    $$- 64 C^{2} Q^{2} \chi u^{\frac{5}{2}} \sqrt{\frac{4 Q}{\tan{\left (\theta \right )}} + u w^{2}} \tan{\left (\theta \right )} - 64 C^{2} Q^{2} \chi u^{3} w \sin{\left (\theta \right )} + 64 C^{2} Q^{2} \chi u^{3} w \tan{\left (\theta \right )} - 64 C^{2} Q^{2} u^{\frac{5}{2}} \sqrt{\frac{4 Q}{\tan{\left (\theta \right )}} + u w^{2}} \tan{\left (\theta \right )} - 64 C^{2} Q^{2} u^{3} w \sin{\left (\theta \right )} + 64 C^{2} Q^{2} u^{3} w \tan{\left (\theta \right )} + 64 Q^{3} \sin{\left (\beta_{0} \right )} \sin{\left (\theta \right )} = 0$$
+
+    
+
+    \subsubsection{Checking}\label{checking}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{sm}\PY{o}{.}\PY{n}{u\PYZus{}geometric\PYZus{}eqn}
+         \PY{n}{sm}\PY{o}{.}\PY{n}{ucubed\PYZus{}dynamic\PYZus{}eqn}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}16}]:}
+    
+    $$u = \frac{Q \tan{\left (\theta \right )}}{d \left(d + w \tan{\left (\theta \right )}\right)}$$
+
+    
+\texttt{\color{outcolor}Out[{\color{outcolor}16}]:}
+    
+    $$u^{3} = \frac{Q \sin{\left (\beta_{0} \right )}}{C^{2} \left(\chi + 1\right) \left(\frac{2 d}{\sin{\left (\theta \right )}} + w\right)}$$
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{c+c1}{\PYZsh{} sm.set\PYZus{}params(\PYZob{}d:2.76, u:3.125, beta\PYZus{}0:5e\PYZhy{}3\PYZcb{})}
+         \PY{n}{sm}\PY{o}{.}\PY{n}{get\PYZus{}params}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}17}]:}
+    
+    $$\left \{ C : 0.0316227766016838, \quad L : 1000.0, \quad \Omega_{r} : 20.0, \quad Q : 100.0, \quad \beta_{0} : 0.005, \quad \chi : 0, \quad d : 2.76, \quad d_{i} : 30.0, \quad \epsilon_{r} : 0.1, \quad \eta : 1.0, \quad \mu : 1.0, \quad \nu : 1.0, \quad \theta : 1.0471975511966, \quad u : 3.125, \quad u_{c} : 6.0, \quad u_{i} : 5.0, \quad w : 10.0\right \}$$
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{sy}\PY{o}{.}\PY{n}{Eq}\PY{p}{(}\PY{n}{u}\PY{p}{,}\PY{n}{sm}\PY{o}{.}\PY{n}{u\PYZus{}geometric\PYZus{}eqn}\PY{o}{.}\PY{n}{args}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{n}{sm}\PY{o}{.}\PY{n}{get\PYZus{}params}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+         \PY{n}{sy}\PY{o}{.}\PY{n}{Eq}\PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{p}{(}\PY{n}{sm}\PY{o}{.}\PY{n}{ucubed\PYZus{}dynamic\PYZus{}eqn}\PY{o}{.}\PY{n}{args}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{subs}\PY{p}{(}\PY{n}{sm}\PY{o}{.}\PY{n}{get\PYZus{}params}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)} \PY{p}{)}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}18}]:}
+    
+    $$u = 3.125$$
+
+    
+\texttt{\color{outcolor}Out[{\color{outcolor}18}]:}
+    
+    $$u = 3.126$$
+
+    
+
+    Check: try with \(w=10\,\mathrm{m}\),
+\(Q = 100\,\mathrm{m}^3\,\mathrm{s}^{-1}\), \(\theta=\dfrac{\pi}{3}\),
+\(\sin\beta= 5 \times 10^{-3}\),
+\(C^2 = 10^{-3}\,\mathrm{s}^2\mathrm{m}^{-1}\), and a guessed depth of
+\(d=2.76\,\mathrm{m}\):
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  in the geometric flow function we get
+  \(u\approx3.125\,\mathrm{m}\,\mathrm{s}^{-1}\)
+\item
+  in the dynamic flow function we get
+  \(u\approx3.126\,\mathrm{m}\,\mathrm{s}^{-1}\)
+\end{itemize}
+
+which indicates the functions are mutually consistent, hydraulically
+reasonable, and dimensionally correct.
+
+    To check the polynomial root finders, let's numerically solve for \(u\)
+and \(d\) for these same parameters:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{n}{sm}\PY{o}{.}\PY{n}{specify\PYZus{}u\PYZus{}polynomial\PYZus{}constants}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{w}\PY{p}{:}\PY{n}{w}\PY{p}{,}\PY{n}{chi}\PY{p}{:}\PY{n}{chi}\PY{p}{\PYZcb{}}\PY{p}{)}
+         \PY{n}{sm}\PY{o}{.}\PY{n}{specify\PYZus{}d\PYZus{}polynomial\PYZus{}constants}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{w}\PY{p}{:}\PY{n}{w}\PY{p}{,}\PY{n}{chi}\PY{p}{:}\PY{n}{chi}\PY{p}{\PYZcb{}}\PY{p}{)}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}19}]:}
+    
+    $$277126.974511925 \sqrt{u} - 640.0 u^{3} \left(\chi + 1\right) \left(- 0.866025403784439 \sqrt{u} w + 1.73205080756888 \sqrt{u w^{2} + 230.94010767585}\right) = 0$$
+
+    
+\texttt{\color{outcolor}Out[{\color{outcolor}19}]:}
+    
+    $$0.00433010897674883 d^{3} \left(d + 1.73205080756888 w\right)^{3} - 51.9615242270663 \left(\chi + 1\right) \left(2 d + 0.866025403784439 w\right) = 0$$
+
+    
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{sy}\PY{o}{.}\PY{n}{Eq}\PY{p}{(}\PY{n}{u}\PY{p}{,}\PY{n}{sm}\PY{o}{.}\PY{n}{root\PYZus{}u\PYZus{}polynomial}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{w}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{,}\PY{n}{chi}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+         \PY{n}{sy}\PY{o}{.}\PY{n}{Eq}\PY{p}{(}\PY{n}{d}\PY{p}{,}\PY{n}{sm}\PY{o}{.}\PY{n}{root\PYZus{}d\PYZus{}polynomial}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{w}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{,}\PY{n}{chi}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+\texttt{\color{outcolor}Out[{\color{outcolor}20}]:}
+    
+    $$u = 3.1257$$
+
+    
+\texttt{\color{outcolor}Out[{\color{outcolor}20}]:}
+    
+    $$d = 2.7596$$
+
+    
+
+    To check the polynomial root finders, let's numerically solve for \(u\)
+and \(d\) for these same parameters:
+
+    \subsection{Bedrock wear}\label{bedrock-wear}
+
+    \subsection{Numerical exploration}\label{numerical-exploration}
+
+    \subsubsection{Parameters}\label{parameters}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{c+c1}{\PYZsh{} sm.set\PYZus{}params(  \PYZob{}theta:sm.pi/4, u\PYZus{}c:2.0, Omega\PYZus{}r:10\PYZcb{} )}
+         \PY{c+c1}{\PYZsh{} sm.set\PYZus{}params(  \PYZob{}epsilon\PYZus{}r:0.1\PYZcb{} )}
+         \PY{c+c1}{\PYZsh{} sm.set\PYZus{}params(  \PYZob{}u\PYZus{}i:5,d\PYZus{}i:30\PYZcb{} )}
+         
+         \PY{c+c1}{\PYZsh{} \PYZsh{} sm.set\PYZus{}params(  \PYZob{}Q:30, beta\PYZus{}0:0.015\PYZcb{} )}
+         \PY{c+c1}{\PYZsh{} \PYZsh{} w\PYZus{}range = (0.1,30)}
+         
+         \PY{c+c1}{\PYZsh{} \PYZsh{} sm.set\PYZus{}params(  \PYZob{}Q:300, beta\PYZus{}0:0.0048\PYZcb{} )}
+         \PY{c+c1}{\PYZsh{} sm.set\PYZus{}params(  \PYZob{}Q:300, beta\PYZus{}0:0.0015\PYZcb{} )}
+         \PY{c+c1}{\PYZsh{} w\PYZus{}range = (0.1,100)}
+         
+         \PY{c+c1}{\PYZsh{} sm.set\PYZus{}params(  \PYZob{}Q:3000, beta\PYZus{}0:0.0015\PYZcb{} )}
+         \PY{c+c1}{\PYZsh{} w\PYZus{}range = (0.1,300)}
+         
+         \PY{c+c1}{\PYZsh{} sm.get\PYZus{}params()}
+         \PY{c+c1}{\PYZsh{} chi\PYZus{}range=(0,3)}
+         \PY{c+c1}{\PYZsh{} sm.specify\PYZus{}u\PYZus{}polynomial\PYZus{}constants(\PYZob{}w:w,chi:chi\PYZcb{})}
+         \PY{c+c1}{\PYZsh{} sm.specify\PYZus{}d\PYZus{}polynomial\PYZus{}constants(\PYZob{}w:w,chi:chi\PYZcb{})}
+         \PY{c+c1}{\PYZsh{} res = 25}
+         
+         \PY{c+c1}{\PYZsh{} w\PYZus{}vec,chi\PYZus{}vec,w\PYZus{}mesh,chi\PYZus{}mesh = sm.create\PYZus{}w\PYZus{}chi\PYZus{}vecs\PYZus{}meshes(w\PYZus{}range,chi\PYZus{}range,res=res)}
+         \PY{c+c1}{\PYZsh{} sm.u\PYZus{}i, sm.d\PYZus{}i}
+\end{Verbatim}
+
+
+    \subsubsection{Hydraulics: 1d plots}\label{hydraulics-1d-plots}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{c+c1}{\PYZsh{} chi\PYZus{}list, wud\PYZus{}vec\PYZus{}list = sm.u\PYZus{}d\PYZus{}for\PYZus{}w\PYZus{}chi(res=30)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{c+c1}{\PYZsh{} sinuosity.plot.plot\PYZus{}u\PYZus{}w(sm, chi\PYZus{}list, wud\PYZus{}vec\PYZus{}list)}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.plot\PYZus{}d\PYZus{}w(sm, chi\PYZus{}list, wud\PYZus{}vec\PYZus{}list)}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.plot\PYZus{}u\PYZus{}d(sm, chi\PYZus{}list, wud\PYZus{}vec\PYZus{}list)}
+\end{Verbatim}
+
+
+    \subsubsection{Hydraulics: grids}\label{hydraulics-grids}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{c+c1}{\PYZsh{} u\PYZus{}array,d\PYZus{}array = sm.nsolve\PYZus{}scipy\PYZus{}u\PYZus{}d\PYZus{}for\PYZus{}w\PYZus{}chi\PYZus{}meshes(w\PYZus{}mesh,chi\PYZus{}mesh)}
+         \PY{c+c1}{\PYZsh{} epsilon\PYZus{}array = sm.epsilon\PYZus{}wrap\PYZus{}for\PYZus{}w\PYZus{}chi\PYZus{}meshes(w\PYZus{}mesh,chi\PYZus{}mesh)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{c+c1}{\PYZsh{} title=\PYZsq{}Flow speed \PYZdl{}u(w, \PYZbs{}\PYZbs{}chi)\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec, }
+         \PY{c+c1}{\PYZsh{}                                       u\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{} \PYZsh{}                                       u\PYZus{}interp(w\PYZus{}array,chi\PYZus{}array),}
+         \PY{c+c1}{\PYZsh{}                                       title=title,}
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}u\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{}, }
+         \PY{c+c1}{\PYZsh{}                                       fmt=\PYZsq{}\PYZpc{}1.2f\PYZsq{})}
+         
+         \PY{c+c1}{\PYZsh{} title=\PYZsq{}Flow depth \PYZdl{}d(w, \PYZbs{}\PYZbs{}chi)\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec, }
+         \PY{c+c1}{\PYZsh{}                                       d\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{} \PYZsh{}                                       d\PYZus{}interp(w\PYZus{}array,chi\PYZus{}array),}
+         \PY{c+c1}{\PYZsh{}                                       title=title,}
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}d\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{}, }
+         \PY{c+c1}{\PYZsh{}                                       fmt=\PYZsq{}\PYZpc{}1.0f\PYZsq{})}
+         
+         \PY{c+c1}{\PYZsh{} from numpy import sqrt,sin,float32}
+         \PY{c+c1}{\PYZsh{} title=\PYZsq{}Flow aspect ratio \PYZdl{}\PYZbs{}\PYZbs{}Omega(w, \PYZbs{}\PYZbs{}chi)\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} \PYZsh{} Omega\PYZus{}array = (w\PYZus{}mesh+2*d\PYZus{}array/sin(float32(sm.theta)))/d\PYZus{}array/sm.Omega\PYZus{}r}
+         \PY{c+c1}{\PYZsh{} \PYZsh{} title=\PYZsq{}Flow aspect ratio \PYZdl{}\PYZbs{}\PYZbs{}Omega(w, \PYZbs{}\PYZbs{}chi)/\PYZbs{}\PYZbs{}Omega\PYZus{}r\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} Omega\PYZus{}array = (w\PYZus{}mesh+2*d\PYZus{}array/sin(float32(sm.theta)))/d\PYZus{}array}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec, }
+         \PY{c+c1}{\PYZsh{}                                       Omega\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{} \PYZsh{}                                       d\PYZus{}interp(w\PYZus{}array,chi\PYZus{}array),}
+         \PY{c+c1}{\PYZsh{}                                       title=title,}
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}Omega\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{}, }
+         \PY{c+c1}{\PYZsh{}                                       fmt=\PYZsq{}\PYZpc{}1.0f\PYZsq{})}
+         \PY{c+c1}{\PYZsh{} sf=1}
+         \PY{c+c1}{\PYZsh{} title=\PYZsq{}Bend excess speed factor \PYZdl{}\PYZbs{}\PYZbs{}epsilon(w, \PYZbs{}\PYZbs{}chi)\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec, }
+         \PY{c+c1}{\PYZsh{}                                       epsilon\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{}                                       title=title, }
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}epsilon\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{}, }
+         \PY{c+c1}{\PYZsh{}                                       sf=sf, fmt=\PYZsq{}\PYZpc{}1.2f\PYZsq{})}
+\end{Verbatim}
+
+
+    \subsubsection{Wear}\label{wear}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{c+c1}{\PYZsh{} sm.set\PYZus{}params(  \PYZob{}mu:1.0,eta:2\PYZcb{} )}
+         \PY{c+c1}{\PYZsh{} sm.get\PYZus{}params()}
+         \PY{c+c1}{\PYZsh{} xiz\PYZus{}array       = sm.xiz\PYZus{}for\PYZus{}u(u\PYZus{}array)}
+         \PY{c+c1}{\PYZsh{} xiy\PYZus{}plus\PYZus{}array  = sm.xiy\PYZus{}for\PYZus{}u\PYZus{}d\PYZus{}epsilon\PYZus{}w(u\PYZus{}array,d\PYZus{}array,epsilon\PYZus{}array,w\PYZus{}mesh,+1)}
+         \PY{c+c1}{\PYZsh{} xiy\PYZus{}minus\PYZus{}array = sm.xiy\PYZus{}for\PYZus{}u\PYZus{}d\PYZus{}epsilon\PYZus{}w(u\PYZus{}array,d\PYZus{}array,epsilon\PYZus{}array,w\PYZus{}mesh,\PYZhy{}1)}
+         
+         \PY{c+c1}{\PYZsh{} \PYZsh{} tanphi\PYZus{}plus\PYZus{}array  = sm.tanphi\PYZus{}xiz\PYZus{}xiy(xiz\PYZus{}array, xiy\PYZus{}plus\PYZus{}array)}
+         \PY{c+c1}{\PYZsh{} \PYZsh{} tanphi\PYZus{}minus\PYZus{}array = sm.tanphi\PYZus{}xiz\PYZus{}xiy(xiz\PYZus{}array, xiy\PYZus{}minus\PYZus{}array)}
+         
+         \PY{c+c1}{\PYZsh{} dcdt\PYZus{}plus\PYZus{}array  = sm.dcdt\PYZus{}for\PYZus{}xiz\PYZus{}xiy(xiz\PYZus{}array, xiy\PYZus{}plus\PYZus{}array)}
+         \PY{c+c1}{\PYZsh{} dcdt\PYZus{}minus\PYZus{}array = sm.dcdt\PYZus{}for\PYZus{}xiz\PYZus{}xiy(xiz\PYZus{}array, xiy\PYZus{}minus\PYZus{}array)}
+         
+         \PY{c+c1}{\PYZsh{} dwdt\PYZus{}array = sm.dwdt\PYZus{}for\PYZus{}dcdt(dcdt\PYZus{}plus\PYZus{}array,dcdt\PYZus{}minus\PYZus{}array)}
+         \PY{c+c1}{\PYZsh{} dmdt\PYZus{}array = sm.dmdt\PYZus{}for\PYZus{}dcdt(dcdt\PYZus{}plus\PYZus{}array,dcdt\PYZus{}minus\PYZus{}array)}
+         \PY{c+c1}{\PYZsh{} dchidt\PYZus{}array = sm.dchidt\PYZus{}for\PYZus{}dmdt(dmdt\PYZus{}array)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{c+c1}{\PYZsh{} title = \PYZsq{}Rate of base width change  \PYZdl{}\PYZbs{}\PYZbs{}partial\PYZob{}w\PYZcb{}/\PYZbs{}\PYZbs{}partial\PYZob{}t\PYZcb{}\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec, dwdt\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{}                                       title=title, }
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}dwdt\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{}, }
+         \PY{c+c1}{\PYZsh{}                                       sf=1, fmt=\PYZsq{}\PYZpc{}1.0f\PYZsq{}, fat\PYZus{}line=[0.0,\PYZsq{}k\PYZsq{},True],}
+         \PY{c+c1}{\PYZsh{}                                       do\PYZus{}plot\PYZus{}contours=True)}
+         \PY{c+c1}{\PYZsh{} sf=1000}
+         \PY{c+c1}{\PYZsh{} title=\PYZsq{}Rate of sinuosity change  \PYZdl{}\PYZbs{}\PYZbs{}partial\PYZbs{}\PYZbs{}chi/\PYZbs{}\PYZbs{}partial\PYZob{}t\PYZcb{}*\PYZsq{}+\PYZsq{}\PYZob{}0\PYZcb{}\PYZsq{}.format(sf)+\PYZsq{}\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec, dchidt\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{}                                       title=title, }
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}dchidt\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{}, }
+         \PY{c+c1}{\PYZsh{}                                       sf=sf, fmt=\PYZsq{}\PYZpc{}1.2f\PYZsq{}, fat\PYZus{}line=[0.01,\PYZsq{}gray\PYZsq{},True])}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{c+c1}{\PYZsh{} import numpy as np}
+         \PY{c+c1}{\PYZsh{} sm.ode\PYZus{}integrate(initial\PYZus{}state=np.array([2.59548644e+02, }
+         \PY{c+c1}{\PYZsh{}                                          4.48357265e\PYZhy{}01])}
+         \PY{c+c1}{\PYZsh{} \PYZsh{}                  ,u\PYZus{}init=5,d\PYZus{}init=2.2}
+         \PY{c+c1}{\PYZsh{}                 );}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{c+c1}{\PYZsh{} (initial\PYZus{}states\PYZus{}array, ode\PYZus{}integrations\PYZus{}list, }
+         \PY{c+c1}{\PYZsh{}          t\PYZus{}w\PYZus{}chi\PYZus{}vecs\PYZus{}list, w\PYZus{}chi\PYZus{}interp\PYZus{}as\PYZus{}t\PYZus{}list, }
+         \PY{c+c1}{\PYZsh{}          t\PYZus{}w\PYZus{}chi\PYZus{}resampled\PYZus{}vecs\PYZus{}array, }
+         \PY{c+c1}{\PYZsh{}          t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array) \PYZbs{}}
+         \PY{c+c1}{\PYZsh{}     = sm.perform\PYZus{}ode\PYZus{}integrations(t\PYZus{}span=[0.0,1e3], interp\PYZus{}t\PYZus{}step=1,}
+         \PY{c+c1}{\PYZsh{}                                   \PYZsh{}max\PYZus{}step=10,}
+         \PY{c+c1}{\PYZsh{}                                   n\PYZus{}solutions=30, }
+         \PY{c+c1}{\PYZsh{}                                   initial\PYZus{}w\PYZus{}range=[50,300],}
+         \PY{c+c1}{\PYZsh{}                                   initial\PYZus{}chi\PYZus{}range=[0.01,0.5],}
+         \PY{c+c1}{\PYZsh{}                                   random\PYZus{}seed=1, do\PYZus{}densify=False, }
+         \PY{c+c1}{\PYZsh{}                                   interp\PYZus{}kind=\PYZsq{}cubic\PYZsq{})}
+         \PY{c+c1}{\PYZsh{} t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{c+c1}{\PYZsh{} import matplotlib.pyplot as plt}
+         \PY{c+c1}{\PYZsh{} fig = plt.figure();}
+         \PY{c+c1}{\PYZsh{} fig.set\PYZus{}size\PYZus{}inches(8,6);}
+         \PY{c+c1}{\PYZsh{} plt.plot(t\PYZus{}w\PYZus{}chi\PYZus{}vecs[:,0]*1e\PYZhy{}3,t\PYZus{}w\PYZus{}chi\PYZus{}vecs[:,1],\PYZsq{}b\PYZsq{});}
+         \PY{c+c1}{\PYZsh{} plt.plot(t\PYZus{}w\PYZus{}chi\PYZus{}vecs[:,0]*1e\PYZhy{}3,t\PYZus{}w\PYZus{}chi\PYZus{}vecs[:,2]*20,\PYZsq{}r\PYZsq{});}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{c+c1}{\PYZsh{} title=\PYZsq{}Bed erosion rate \PYZdl{}\PYZbs{}\PYZbs{}xi\PYZus{}\PYZob{}z\PYZcb{}(w, \PYZbs{}\PYZbs{}chi)\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec, xiz\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{}                                       title=title, }
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}xiz\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{}, }
+         \PY{c+c1}{\PYZsh{}                                       fmt=\PYZsq{}\PYZpc{}1.1f\PYZsq{})}
+         
+         \PY{c+c1}{\PYZsh{} title=\PYZsq{}Left wall erosion rate \PYZdl{}\PYZbs{}\PYZbs{}xi\PYZus{}\PYZob{}y+\PYZcb{}(w, \PYZbs{}\PYZbs{}chi)\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec, xiy\PYZus{}plus\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{}                                       title=title,}
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}xiy\PYZus{}plus\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{}, }
+         \PY{c+c1}{\PYZsh{}                                       sf=1, fmt=\PYZsq{}\PYZpc{}1.1f\PYZsq{})}
+         
+         \PY{c+c1}{\PYZsh{} title=\PYZsq{}Right wall erosion rate \PYZdl{}\PYZbs{}\PYZbs{}xi\PYZus{}\PYZob{}y\PYZhy{}\PYZcb{}(w, \PYZbs{}\PYZbs{}chi)\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec, xiy\PYZus{}minus\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{}                                       title=title,}
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}xiy\PYZus{}minus\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{}, }
+         \PY{c+c1}{\PYZsh{}                                       sf=1, fmt=\PYZsq{}\PYZpc{}1.1f\PYZsq{})}
+         
+         \PY{c+c1}{\PYZsh{} title=\PYZsq{}Left corner vector angle \PYZdl{}\PYZbs{}\PYZbs{}phi\PYZus{}\PYZob{}+\PYZcb{}(w, \PYZbs{}\PYZbs{}chi)\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec,}
+         \PY{c+c1}{\PYZsh{}                                       tanphi\PYZus{}plus\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{}                                       title=title,}
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}xiy\PYZus{}minus\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{},}
+         \PY{c+c1}{\PYZsh{}                                       fmt=\PYZsq{}\PYZpc{}1.0f\PYZsq{}, is\PYZus{}tanphi=True)}
+         
+         \PY{c+c1}{\PYZsh{} title=\PYZsq{}Right corner vector angle \PYZdl{}\PYZbs{}\PYZbs{}phi\PYZus{}\PYZob{}\PYZhy{}\PYZcb{}(w, \PYZbs{}\PYZbs{}chi)\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec,}
+         \PY{c+c1}{\PYZsh{}                                       tanphi\PYZus{}minus\PYZus{}array, }
+         \PY{c+c1}{\PYZsh{}                                       title=title,}
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}xiy\PYZus{}plus\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{},}
+         \PY{c+c1}{\PYZsh{}                                       fmt=\PYZsq{}\PYZpc{}1.0f\PYZsq{}, is\PYZus{}tanphi=True)}
+         
+         \PY{c+c1}{\PYZsh{} title=\PYZsq{}Left corner vector \PYZdl{}dc\PYZus{}\PYZob{}+\PYZcb{}/dt(w, \PYZbs{}\PYZbs{}chi)\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec, dcdt\PYZus{}plus\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{}                                       title=title,}
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}dcdt\PYZus{}plus\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{},}
+         \PY{c+c1}{\PYZsh{}                                       fmt=\PYZsq{}\PYZpc{}1.1f\PYZsq{})}
+         
+         \PY{c+c1}{\PYZsh{} title=\PYZsq{}Right corner vector \PYZdl{}dc\PYZus{}\PYZob{}\PYZhy{}\PYZcb{}/dt(w, \PYZbs{}\PYZbs{}chi)\PYZdl{}\PYZsq{}}
+         \PY{c+c1}{\PYZsh{} sinuosity.plot.contour\PYZus{}grid\PYZus{}for\PYZus{}w\PYZus{}chi(sm, w\PYZus{}vec, chi\PYZus{}vec, dcdt\PYZus{}minus\PYZus{}array,}
+         \PY{c+c1}{\PYZsh{}                                       title=title, }
+         \PY{c+c1}{\PYZsh{}                                       fig\PYZus{}name=\PYZsq{}contour\PYZus{}dcdt\PYZus{}minus\PYZus{}from\PYZus{}w\PYZus{}chi\PYZsq{},}
+         \PY{c+c1}{\PYZsh{}                                       fmt=\PYZsq{}\PYZpc{}1.1f\PYZsq{})}
+\end{Verbatim}
+
+
+    \subsection{Ensemble solutions}\label{ensemble-solutions}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{k+kc}{None}\PY{p}{]}\PY{o}{*}\PY{l+m+mi}{4}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{p}{(}\PY{n}{w\PYZus{}vec}\PY{p}{,}\PY{n}{chi\PYZus{}vec}\PY{p}{,}\PY{n}{w\PYZus{}mesh}\PY{p}{,}\PY{n}{chi\PYZus{}mesh}\PY{p}{,}
+          \PY{n}{dwdt\PYZus{}array}\PY{p}{,} \PY{n}{dchidt\PYZus{}array}\PY{p}{,}
+          \PY{n}{u\PYZus{}array}\PY{p}{,}\PY{n}{d\PYZus{}array}\PY{p}{,}
+          \PY{n}{initial\PYZus{}states\PYZus{}array}\PY{p}{,} \PY{n}{ode\PYZus{}integrations\PYZus{}list}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}vecs\PYZus{}list}\PY{p}{,} \PY{n}{w\PYZus{}chi\PYZus{}interp\PYZus{}as\PYZus{}t\PYZus{}list}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}resampled\PYZus{}vecs\PYZus{}array}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)} \PYZbs{}
+             \PY{o}{=} \PY{n}{sm}\PY{o}{.}\PY{n}{solve\PYZus{}system}\PY{p}{(}\PY{n}{n\PYZus{}solutions}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{Qx}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,} \PY{n}{random\PYZus{}seed}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+                               \PY{n}{grid\PYZus{}w\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{,}\PY{l+m+mi}{200}\PY{p}{)}\PY{p}{,} \PY{n}{initial\PYZus{}w\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{25}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}\PY{p}{,}
+                               \PY{n}{grid\PYZus{}chi\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+                           \PY{p}{)}
+         \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}33}]:} array([5.00000000e+02, 6.93227160e+01, 3.10790177e-01])
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{title} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Channel width \PYZam{} sinuosity evolution: }\PY{l+s+s1}{\PYZsq{}} \PYZbs{}
+                 \PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  \PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}w\PYZcb{}}\PY{l+s+s1}{/}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZdl{},}\PY{l+s+s1}{\PYZsq{}} \PYZbs{}
+                 \PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  \PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{chi/}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}
+         \PY{n}{sinuosity}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{quiver\PYZus{}grids\PYZus{}for\PYZus{}w\PYZus{}chi}\PY{p}{(}
+                 \PY{n}{sm}\PY{p}{,} \PY{n}{w\PYZus{}mesh}\PY{p}{,} \PY{n}{chi\PYZus{}mesh}\PY{p}{,} 
+                 \PY{n}{dwdt\PYZus{}array}\PY{p}{,} \PY{n}{dchidt\PYZus{}array}\PY{p}{,}
+                 \PY{n}{title}\PY{o}{=}\PY{n}{title}\PY{p}{,} 
+                 \PY{n}{fig\PYZus{}name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{quiver\PYZus{}dwchidt\PYZus{}from\PYZus{}w\PYZus{}chi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{n}{subsample}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{n}{fmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}1.2f}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{n}{do\PYZus{}channel\PYZus{}line}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}integrations}\PY{o}{=}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}vecs\PYZus{}list}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}interps}\PY{o}{=}\PY{n}{w\PYZus{}chi\PYZus{}interp\PYZus{}as\PYZus{}t\PYZus{}list}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}resamples}\PY{o}{=}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}resampled\PYZus{}vecs\PYZus{}array}\PY{p}{,}
+                 \PY{n}{n\PYZus{}interp\PYZus{}pts}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,}
+                 \PY{n}{solution\PYZus{}line}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mf}{0.4}\PY{p}{,}\PY{l+m+mf}{1.}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}
+                 \PY{n}{ensemble\PYZus{}mean}\PY{o}{=}\PY{p}{[}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{go}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mf}{0.6}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{]}
+             \PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_68_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{p}{(}\PY{n}{w\PYZus{}vec}\PY{p}{,}\PY{n}{chi\PYZus{}vec}\PY{p}{,}\PY{n}{w\PYZus{}mesh}\PY{p}{,}\PY{n}{chi\PYZus{}mesh}\PY{p}{,}
+          \PY{n}{dwdt\PYZus{}array}\PY{p}{,} \PY{n}{dchidt\PYZus{}array}\PY{p}{,}
+          \PY{n}{u\PYZus{}array}\PY{p}{,}\PY{n}{d\PYZus{}array}\PY{p}{,}
+          \PY{n}{initial\PYZus{}states\PYZus{}array}\PY{p}{,} \PY{n}{ode\PYZus{}integrations\PYZus{}list}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}vecs\PYZus{}list}\PY{p}{,} \PY{n}{w\PYZus{}chi\PYZus{}interp\PYZus{}as\PYZus{}t\PYZus{}list}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}resampled\PYZus{}vecs\PYZus{}array}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)} \PYZbs{}
+             \PY{o}{=} \PY{n}{sm}\PY{o}{.}\PY{n}{solve\PYZus{}system}\PY{p}{(}\PY{n}{n\PYZus{}solutions}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{Qx}\PY{o}{=}\PY{l+m+mi}{1000}\PY{p}{,} \PY{n}{random\PYZus{}seed}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,}
+                               \PY{n}{grid\PYZus{}w\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{,}\PY{l+m+mi}{200}\PY{p}{)}\PY{p}{,} \PY{n}{initial\PYZus{}w\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{30}\PY{p}{,}\PY{l+m+mi}{175}\PY{p}{)}\PY{p}{,}
+                               \PY{n}{grid\PYZus{}chi\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+                           \PY{p}{)}
+         \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}35}]:} array([500.        , 118.87847154,   0.85953478])
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{title} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Channel width \PYZam{} sinuosity evolution: }\PY{l+s+s1}{\PYZsq{}} \PYZbs{}
+                 \PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  \PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}w\PYZcb{}}\PY{l+s+s1}{/}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZdl{},}\PY{l+s+s1}{\PYZsq{}} \PYZbs{}
+                 \PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  \PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{chi/}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}
+         \PY{n}{sinuosity}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{quiver\PYZus{}grids\PYZus{}for\PYZus{}w\PYZus{}chi}\PY{p}{(}
+                 \PY{n}{sm}\PY{p}{,} \PY{n}{w\PYZus{}mesh}\PY{p}{,} \PY{n}{chi\PYZus{}mesh}\PY{p}{,} 
+                 \PY{n}{dwdt\PYZus{}array}\PY{p}{,} \PY{n}{dchidt\PYZus{}array}\PY{p}{,}
+                 \PY{n}{title}\PY{o}{=}\PY{n}{title}\PY{p}{,} 
+                 \PY{n}{fig\PYZus{}name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{quiver\PYZus{}dwchidt\PYZus{}from\PYZus{}w\PYZus{}chi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{n}{subsample}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{n}{fmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}1.2f}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{n}{do\PYZus{}channel\PYZus{}line}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}integrations}\PY{o}{=}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}vecs\PYZus{}list}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}interps}\PY{o}{=}\PY{n}{w\PYZus{}chi\PYZus{}interp\PYZus{}as\PYZus{}t\PYZus{}list}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}resamples}\PY{o}{=}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}resampled\PYZus{}vecs\PYZus{}array}\PY{p}{,}
+                 \PY{n}{n\PYZus{}interp\PYZus{}pts}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,}
+                 \PY{n}{solution\PYZus{}line}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mf}{0.4}\PY{p}{,}\PY{l+m+mf}{1.}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}
+                 \PY{n}{ensemble\PYZus{}mean}\PY{o}{=}\PY{p}{[}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{go}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mf}{0.6}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{]}
+             \PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_70_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{p}{(}\PY{n}{w\PYZus{}vec}\PY{p}{,}\PY{n}{chi\PYZus{}vec}\PY{p}{,}\PY{n}{w\PYZus{}mesh}\PY{p}{,}\PY{n}{chi\PYZus{}mesh}\PY{p}{,}
+          \PY{n}{dwdt\PYZus{}array}\PY{p}{,} \PY{n}{dchidt\PYZus{}array}\PY{p}{,}
+          \PY{n}{u\PYZus{}array}\PY{p}{,}\PY{n}{d\PYZus{}array}\PY{p}{,}
+          \PY{n}{initial\PYZus{}states\PYZus{}array}\PY{p}{,} \PY{n}{ode\PYZus{}integrations\PYZus{}list}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}vecs\PYZus{}list}\PY{p}{,} \PY{n}{w\PYZus{}chi\PYZus{}interp\PYZus{}as\PYZus{}t\PYZus{}list}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}resampled\PYZus{}vecs\PYZus{}array}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)} \PYZbs{}
+             \PY{o}{=} \PY{n}{sm}\PY{o}{.}\PY{n}{solve\PYZus{}system}\PY{p}{(}\PY{n}{n\PYZus{}solutions}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{Qx}\PY{o}{=}\PY{l+m+mi}{2000}\PY{p}{,} 
+                               \PY{n}{grid\PYZus{}w\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{,}\PY{l+m+mi}{250}\PY{p}{)}\PY{p}{,} \PY{n}{initial\PYZus{}w\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{40}\PY{p}{,}\PY{l+m+mi}{225}\PY{p}{)}\PY{p}{,}
+                               \PY{n}{grid\PYZus{}chi\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+                           \PY{p}{)}
+         \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}37}]:} array([500.        , 165.92008808,   1.52582825])
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{n}{title} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Channel width \PYZam{} sinuosity evolution: }\PY{l+s+s1}{\PYZsq{}} \PYZbs{}
+                 \PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  \PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}w\PYZcb{}}\PY{l+s+s1}{/}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZdl{},}\PY{l+s+s1}{\PYZsq{}} \PYZbs{}
+                 \PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  \PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{chi/}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}
+         \PY{n}{sinuosity}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{quiver\PYZus{}grids\PYZus{}for\PYZus{}w\PYZus{}chi}\PY{p}{(}
+                 \PY{n}{sm}\PY{p}{,} \PY{n}{w\PYZus{}mesh}\PY{p}{,} \PY{n}{chi\PYZus{}mesh}\PY{p}{,} 
+                 \PY{n}{dwdt\PYZus{}array}\PY{p}{,} \PY{n}{dchidt\PYZus{}array}\PY{p}{,}
+                 \PY{n}{title}\PY{o}{=}\PY{n}{title}\PY{p}{,} 
+                 \PY{n}{fig\PYZus{}name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{quiver\PYZus{}dwchidt\PYZus{}from\PYZus{}w\PYZus{}chi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{n}{subsample}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{n}{fmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}1.2f}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{n}{do\PYZus{}channel\PYZus{}line}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}integrations}\PY{o}{=}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}vecs\PYZus{}list}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}interps}\PY{o}{=}\PY{n}{w\PYZus{}chi\PYZus{}interp\PYZus{}as\PYZus{}t\PYZus{}list}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}resamples}\PY{o}{=}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}resampled\PYZus{}vecs\PYZus{}array}\PY{p}{,}
+                 \PY{n}{n\PYZus{}interp\PYZus{}pts}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,}
+                 \PY{n}{solution\PYZus{}line}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mf}{0.4}\PY{p}{,}\PY{l+m+mf}{1.}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}
+                 \PY{n}{ensemble\PYZus{}mean}\PY{o}{=}\PY{p}{[}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{go}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mf}{0.6}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{]}
+             \PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_72_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{p}{(}\PY{n}{w\PYZus{}vec}\PY{p}{,}\PY{n}{chi\PYZus{}vec}\PY{p}{,}\PY{n}{w\PYZus{}mesh}\PY{p}{,}\PY{n}{chi\PYZus{}mesh}\PY{p}{,}
+          \PY{n}{dwdt\PYZus{}array}\PY{p}{,} \PY{n}{dchidt\PYZus{}array}\PY{p}{,}
+          \PY{n}{u\PYZus{}array}\PY{p}{,}\PY{n}{d\PYZus{}array}\PY{p}{,}
+          \PY{n}{initial\PYZus{}states\PYZus{}array}\PY{p}{,} \PY{n}{ode\PYZus{}integrations\PYZus{}list}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}vecs\PYZus{}list}\PY{p}{,} \PY{n}{w\PYZus{}chi\PYZus{}interp\PYZus{}as\PYZus{}t\PYZus{}list}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}resampled\PYZus{}vecs\PYZus{}array}\PY{p}{,} 
+          \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)} \PYZbs{}
+             \PY{o}{=} \PY{n}{sm}\PY{o}{.}\PY{n}{solve\PYZus{}system}\PY{p}{(}\PY{n}{n\PYZus{}solutions}\PY{o}{=}\PY{l+m+mi}{30}\PY{p}{,} \PY{n}{Qx}\PY{o}{=}\PY{l+m+mi}{3000}\PY{p}{,} 
+                               \PY{n}{grid\PYZus{}w\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mf}{0.1}\PY{p}{,}\PY{l+m+mi}{300}\PY{p}{)}\PY{p}{,} \PY{n}{initial\PYZus{}w\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,}\PY{l+m+mi}{250}\PY{p}{)}\PY{p}{,}
+                               \PY{n}{grid\PYZus{}chi\PYZus{}range}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+                           \PY{p}{)}
+         \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}39}]:} array([500.        , 199.55339536,   1.92656337])
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{n}{title} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Channel width \PYZam{} sinuosity evolution: }\PY{l+s+s1}{\PYZsq{}} \PYZbs{}
+                 \PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  \PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}w\PYZcb{}}\PY{l+s+s1}{/}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZdl{},}\PY{l+s+s1}{\PYZsq{}} \PYZbs{}
+                 \PY{o}{+}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{  \PYZdl{}}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{chi/}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{partial}\PY{l+s+si}{\PYZob{}t\PYZcb{}}\PY{l+s+s1}{\PYZdl{}}\PY{l+s+s1}{\PYZsq{}}
+         \PY{n}{sinuosity}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{quiver\PYZus{}grids\PYZus{}for\PYZus{}w\PYZus{}chi}\PY{p}{(}
+                 \PY{n}{sm}\PY{p}{,} \PY{n}{w\PYZus{}mesh}\PY{p}{,} \PY{n}{chi\PYZus{}mesh}\PY{p}{,} 
+                 \PY{n}{dwdt\PYZus{}array}\PY{p}{,} \PY{n}{dchidt\PYZus{}array}\PY{p}{,}
+                 \PY{n}{title}\PY{o}{=}\PY{n}{title}\PY{p}{,} 
+                 \PY{n}{fig\PYZus{}name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{quiver\PYZus{}dwchidt\PYZus{}from\PYZus{}w\PYZus{}chi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{n}{subsample}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{,} \PY{n}{fmt}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}1.2f}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                 \PY{n}{do\PYZus{}channel\PYZus{}line}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}integrations}\PY{o}{=}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}vecs\PYZus{}list}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}interps}\PY{o}{=}\PY{n}{w\PYZus{}chi\PYZus{}interp\PYZus{}as\PYZus{}t\PYZus{}list}\PY{p}{,}
+                 \PY{n}{ode\PYZus{}resamples}\PY{o}{=}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}resampled\PYZus{}vecs\PYZus{}array}\PY{p}{,}
+                 \PY{n}{n\PYZus{}interp\PYZus{}pts}\PY{o}{=}\PY{l+m+mi}{300}\PY{p}{,}
+                 \PY{n}{solution\PYZus{}line}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{k}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mf}{0.4}\PY{p}{,}\PY{l+m+mf}{1.}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}
+                 \PY{n}{ensemble\PYZus{}mean}\PY{o}{=}\PY{p}{[}\PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{]}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{go}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+m+mf}{0.6}\PY{p}{,}\PY{l+m+mi}{20}\PY{p}{]}
+             \PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_74_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         \PY{n}{Qs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{300}\PY{p}{,}\PY{l+m+mi}{1000}\PY{p}{,}\PY{l+m+mi}{2000}\PY{p}{,}\PY{l+m+mi}{3000}\PY{p}{)}\PY{p}{)}
+         \PY{n}{chis} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{n}{arr}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]} \PY{k}{for} \PY{n}{arr} \PY{o+ow}{in} \PY{n}{t\PYZus{}w\PYZus{}chi\PYZus{}means\PYZus{}array\PYZus{}list}\PY{p}{]}\PY{p}{)}
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{Qs}\PY{p}{,}\PY{n}{chis}\PY{p}{,}\PY{n}{Qs}\PY{p}{,}\PY{n}{chis}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ko}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_75_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

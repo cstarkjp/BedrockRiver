@@ -1,0 +1,35 @@
+import sympy as sy
+
+Q,theta,C,beta, beta_0, eta = sy.symbols('Q theta C beta beta_0 eta',positive=True) 
+chi = sy.symbols('chi',  real=True, negative=False )
+chi_positive = sy.symbols('chi',  positive=True )
+chi, R, w, L, W, U = sy.symbols('chi R w L W U',  positive=True )
+kappa = sy.symbols('kappa', real=True, negative=False )
+Omega_r, epsilon_r, eta = sy.symbols('Omega_r epsilon_r eta',  positive=True )
+u, d, u_c, mu, u_i, d_i = sy.symbols('u d u_c mu u_i d_i ', positive=True )
+x, t = sy.symbols('x t',  real=True, negative=False )
+
+nu = sy.symbols('nu', real=True, negative=False )
+n = sy.symbols('n', real=True, integer=True )
+m = sy.symbols('m', real=True, negative=False )
+omega = sy.symbols('omega', real=True, negative=False )
+K = sy.symbols('K',positive=True )
+Ksqrt = sy.symbols('K_sqrt',positive=True )
+
+
+f_c_p = sy.Function('c_{+}', real=True)(x,t)
+f_c_m = sy.Function('c_{-}', real=True)(x,t)
+f_m   = sy.Function('m', real=True)(x,t)
+f_R   = sy.Function('R', real=True)(chi)
+f_epsilon   = sy.Function('epsilon', real=True)(chi)
+f_chi   = sy.Function('chi', real=True)(omega)
+
+l = sy.symbols('l',  real=True, negative=False ) 
+s = sy.symbols('s',  real=True, negative=False ) 
+y = sy.symbols('y',  real=True, negative=False ) 
+sigma = sy.symbols('sigma',  real=True, negative=False ) 
+Ls = sy.symbols('L_s',  positive=True ) 
+J0 = sy.symbols('J_0',  real=True, negative=False ) 
+H0 = sy.symbols('H_0',  real=True, negative=False ) 
+f_J0 = sy.Function('J0', real=True)(omega)
+f_H0 = sy.Function('H0', real=True)(omega)
