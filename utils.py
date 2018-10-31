@@ -109,4 +109,30 @@ def interp_R_chi(m_chi_Ls_R_array, interp_method = 'quadratic'):
                                 kind=interp_method)
     return chi_interp_for_m,R_interp_for_chi
 
+class trig_mixin():
+    def cosec(self, theta):
+        return 1.0/sy.sin(theta)
+    def cot(self, theta):
+        return 1.0/sy.tan(theta)
+    def tan(self, theta):
+        return sy.tan(theta)
+    def cos(self, theta):
+        return sy.cos(theta)
+    def sin(self, theta):
+        return sy.sin(theta)
+    def arctan(self, theta):
+        return sy.atan(theta)
 
+class switch_mixin():
+    def gt_smooth(self, x,x0, k):
+        return 0.5*(1+np.tanh((x-np.float64(x0))/k))
+
+    def lt_smooth(self, x,x0, k):
+        return self.gt_smooth(-x,-x0,k)
+
+    def switch_smooth(self, x,x0, fn_below, fn_above, k=1.0):
+#         return ( self.lt_smooth(x,x0,k)*fn_below + self.gt_smooth(x,x0,k)*fn_above )
+#         lt_smooth = self.lt_smooth(x,x0,k)
+#         return ( lt_smooth*fn_below + (1-lt_smooth)*fn_above )
+        return ( self.lt_smooth(x,x0,k)*(fn_below-fn_above)+fn_above )
+    
