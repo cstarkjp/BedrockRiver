@@ -109,7 +109,7 @@ def interp_R_chi(m_chi_Ls_R_array, interp_method = 'quadratic'):
                                 kind=interp_method)
     return chi_interp_for_m,R_interp_for_chi
 
-class trig_mixin():
+class trig_utils_mixin():
     def cosec(self, theta):
         return 1.0/sy.sin(theta)
     def cot(self, theta):
@@ -123,7 +123,7 @@ class trig_mixin():
     def arctan(self, theta):
         return sy.atan(theta)
 
-class switch_mixin():
+class switch_utils_mixin():
     def gt_smooth(self, x,x0, k):
         return 0.5*(1+np.tanh((x-np.float64(x0))/k))
 
@@ -135,4 +135,22 @@ class switch_mixin():
 #         lt_smooth = self.lt_smooth(x,x0,k)
 #         return ( lt_smooth*fn_below + (1-lt_smooth)*fn_above )
         return ( self.lt_smooth(x,x0,k)*(fn_below-fn_above)+fn_above )
-    
+
+class hydraulics_utils_mixin():
+    def specify_u_polynomial_constants(self, params_dict_update):
+        params_dict = self.get_params()
+        params_dict.update({u:u})
+        params_dict.update(params_dict_update)
+#         for item in params_dict.items():
+#             print(item[0],type(item[1]))
+        self.u_polynomial_specified = self.u_polynomial_eqn.subs(params_dict)
+        return self.u_polynomial_specified
+
+    def specify_d_polynomial_constants(self, params_dict_update):
+        params_dict = self.get_params()
+        params_dict.update({d:d})
+        params_dict.update(params_dict_update)
+        self.d_polynomial_specified = self.d_polynomial_eqn.subs(params_dict)
+        return self.d_polynomial_specified
+
+

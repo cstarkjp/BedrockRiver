@@ -4,11 +4,16 @@ import sympy as sy
 from symbols import *
 from utils import *
 
-class model():
+class empty_model():
     def __init__(self, params_dict=None):
         self.default_params_dict = { 
              Q: 1000.0,
-             theta: sy.pi/3,
+             theta: sy.pi/4,
+             phi:   0,
+             xi_b:  0,
+             xi_c:  0,
+             xi_w:  0,
+             xi_bc: 0,
              beta_0: 0.001,
              C: sy.sqrt(1e-3),
              w: 100.0,
@@ -34,19 +39,6 @@ class model():
         for item in self.default_params_dict.items():
             setattr(self,str(item[0]),sy.N(item[1]))
         
-        self.R_eqn = self.define_R_eqn()
-        self.epsilon_eqn = self.define_epsilon_eqn()
-        self.d_geometric_eqn = self.solve_d_geometric_eqn()
-        self.d_dynamic_eqn = self.raw_d_dynamic_eqn()
-        self.u_geometric_eqn = self.raw_u_geometric_eqn()
-        self.ucubed_dynamic_eqn = self.raw_ucubed_dynamic_eqn()
-        self.u_eqn_rect = self.solve_u_eqn_rect()
-        self.d_eqn_rect = self.solve_d_eqn_rect()
-        self.du_eqn = sy.Eq(self.raw_ucubed_dynamic_eqn().args[1],
-                                (self.raw_u_geometric_eqn().args[1])**3)        
-        self.d_polynomial_eqn = self.d_eqn()
-        self.u_polynomial_eqn = self.u_eqn()
-        
         self.figs={}
         
     def set_params(self, params_dict):
@@ -66,7 +58,15 @@ class model():
             return result
         else:
             return {
-                Q:self.Q, theta:self.theta, beta_0:self.beta_0, C:self.C, 
+                Q:self.Q,
+                theta:self.theta, 
+                phi:self.phi, 
+                xi_b:self.xi_b, 
+                xi_c:self.xi_c, 
+                xi_w:self.xi_w, 
+                xi_bc:self.xi_bc, 
+                beta_0:self.beta_0, 
+                C:self.C, 
                 w:self.w, chi:self.chi,
                 d:self.d, u:self.u, nu:self.nu,
                 u_c:self.u_c, mu:self.mu, Omega_r:self.Omega_r,

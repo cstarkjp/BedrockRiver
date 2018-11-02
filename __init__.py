@@ -1,2 +1,2 @@
 from . import initialize
-from . import bedrockriver
+from . import bedrock_river

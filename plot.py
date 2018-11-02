@@ -173,7 +173,8 @@ def plot_corner_fig(sm):
         {'pts':(hw+max(0.15,u*dt*(cosec(theta)-np.sin(theta))/3), 
                 u*dt*np.cos(theta)/3/3),  'clr':'r', 'lbl': '$\\theta$'},
         {'pts':
-         ( hw+v*dt*0.3*np.tan(np.float64(sm.phi(u,v,theta)/2)),-v*dt*0.3 ),  
+         ( hw+v*dt*0.3*np.tan(np.float64(
+             sm.phi_from_u_v_theta(u,v,theta)/2)),-v*dt*0.3 ),  
          'clr':'b', 'lbl': '$\\phi$'},
 #         {'pts': (hw+dv-dv*0.4, -v*dt+dv*0.4*np.tan(phi(u,v,theta)/2)) ,
 #          'clr':'b', 'lbl': '$\\frac{\\pi}{2}-\\phi$'},

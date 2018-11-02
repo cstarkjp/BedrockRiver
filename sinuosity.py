@@ -6,9 +6,13 @@ import warnings
 
 from symbols import *
 from utils import *
-from channel import channel_model
+import channel
 
-class bend_model(channel_model):
+class model(channel.old_model):
+    def __init__(self, *args, **kwargs):
+        super(model, self).__init__(*args, **kwargs)
+        pass
+
     def dchidt_for_dmdt(self, dmdt_array):
         return np.float64( dmdt_array*(2/self.L) )
 

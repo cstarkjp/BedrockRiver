@@ -1,6 +1,25 @@
 import sympy as sy
 
-Q,theta,C,beta, beta_0, eta = sy.symbols('Q theta C beta beta_0 eta',positive=True) 
+Q,C,beta, beta_0, eta = sy.symbols('Q C beta beta_0 eta',positive=True) 
+theta = sy.symbols('theta',  positive=True )
+phi = sy.symbols('phi',  real=True )
+alpha = sy.symbols('alpha',  positive=True )
+h = sy.symbols('h',  positive=True )
+t = sy.symbols('t',  real=True, negative=False )
+xi_b, xi_c, xi_w = sy.symbols('xi_b xi_c xi_w',  positive=True )
+xi_bc = sy.symbols('xi_bc',  positive=True )
+f_theta   = sy.Function('theta', real=True)(t)
+f_dot_theta   = sy.Function('\dot_theta', real=True)(t)
+z, Z, k  = sy.symbols('z Z k',  positive=True ) 
+z_0, H, Z_0 = sy.symbols('z_0 H Z0',  positive=True) 
+nu = sy.symbols('nu',  positive=True, rational=True ) 
+varphi = sy.symbols('varphi',  positive=True ) 
+f_varphi = sy.Function('varphi', positive=True)(Z)
+q_ss  = sy.symbols('q_ss',  positive=True ) 
+f_q_ss = sy.Function('q_ss', positive=True)(Z)
+q_w, q_c, q_b  = sy.symbols('q_w q_c q_b',  positive=True ) 
+
+
 chi = sy.symbols('chi',  real=True, negative=False )
 chi_positive = sy.symbols('chi',  positive=True )
 chi, R, w, L, W, U = sy.symbols('chi R w L W U',  positive=True )

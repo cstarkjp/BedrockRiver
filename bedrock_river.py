@@ -18,5 +18,6 @@ import plot
 from symbols import *
 from utils import *
 
+import channel
 import sinuosity
 import ensemble
