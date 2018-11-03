@@ -11,4 +11,5 @@ from symbols import *
 from utils import *
 
 class sediment_transport_mixin():
-    pass
+    def v_s_eqn(self):
+        return 0
