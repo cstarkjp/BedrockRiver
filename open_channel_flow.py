@@ -22,6 +22,69 @@ class basic_mixin():
         self.u_polynomial_eqn = self.u_eqn()
         print('done')
    
+class revised_symbolic_mixin(trig_utils_mixin):
+    def A_eqn_geom(self):
+        return sy.Eq(A,d*(w+d/sy.tan(theta)))
+
+    def A_eqn_dyn(self):
+        return sy.Eq(A,Q/u)
+
+    def p_eqn(self):
+        return sy.Eq(p, 2*d/sy.sin(theta)+w)
+
+    def tau_eqn_raw(self):
+        return sy.Eq(tau,(rho*g*A*sy.sin(beta)/p).subs(A,self.A_eqn_dyn().rhs))
+
+    def tau_eqn_geom(self):
+        return sy.simplify(self.tau_eqn_raw().subs(p,self.p_eqn().rhs))
+
+    def friction_eqn(self):
+        return sy.Eq(f,g*C**2)
+
+    def tau_eqn_friction(self):
+        return sy.Eq(tau,f*rho*u**2)
+
+    def tau_eqn_dyn(self):
+        return sy.simplify(self.tau_eqn_friction().subs(f,self.friction_eqn().rhs))
+
+    def u_star_eqn_raw(self):
+        return sy.Eq(u_star, sy.sqrt(tau/rho))
+
+    def u_star_eqn(self):
+        return self.u_star_eqn_raw().subs(tau,self.tau_eqn_dyn().rhs)
+
+    def u_eqn_geom(self):
+        return sy.Eq(u, sy.solve(sy.Eq(self.A_eqn_geom().rhs,self.A_eqn_dyn().rhs),u)[0])
+
+    def ucubed_eqn_dyn(self):
+        ucubed_solns = (sy.solve(sy.Eq(self.tau_eqn_geom().rhs,
+                                        self.tau_eqn_dyn().rhs),u**3))
+        return sy.simplify(sy.Eq(u**3,ucubed_solns[0]))
+
+    def d_eqn_dyn(self):
+        return sy.Eq(d,(sy.solve(self.ucubed_eqn_dyn(),d)[0]).collect(sy.sin(theta)))
+
+    def d_eqn_geom(self):
+        d_soln = sy.Eq(d,sy.simplify(sy.solve(self.u_eqn_geom(),d)[1]))
+        return sy.Eq(d,d_soln.rhs.subs(sy.tan(theta),t).simplify().collect(t) \
+                     .subs(t,sy.tan(theta)))
+
+    def d_eqn_poly(self):
+        d_eqn = sy.Eq(1/self.u_eqn_geom().rhs**3,1/(self.ucubed_eqn_dyn().rhs))
+        return sy.Eq(d_eqn.as_poly(d).args[0])
+
+    def u_eqn_poly(self):
+        u_eqn = sy.Eq(self.d_eqn_geom().rhs,self.d_eqn_dyn().rhs)
+        return sy.Eq(u_eqn.as_poly(1/sy.sqrt(u)).args[0])
+
+#     def x(self):
+#         return xxxxx
+# 
+#     def x(self):
+#         return xxxxx
+
+
+
 class new_symbolic_mixin(trig_utils_mixin):
     def raw_d_dynamic_eqn(self):
         return sy.Eq(d, 
