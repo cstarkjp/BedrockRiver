@@ -206,10 +206,10 @@ def plot_sgc_loops(sm, x_array,y_array,L_x,m_x):
     axes.legend()
     sm.figs.update({'sgc_loops': fig}) 
     
-def plot_R_for_chi_bessel(sm, chi_array,R_array, interp_fn=None, 
+def plot_r_for_chi_bessel(sm, chi_array,r_array, interp_fn=None, 
                           classic_approx=None, data=None):
     fig = create_fig(xy_inches=(7,5));
-    plt.plot(chi_array,R_array, 'blue', lw=1.5, label='SGC full Bessel-Struve series')
+    plt.plot(chi_array,r_array, 'blue', lw=1.5, label='SGC full Bessel-Struve series')
     if interp_fn is not None:
         plt.plot(chi_array,interp_fn(chi_array), 'k', dashes=[3, 6], lw=3,
                  label='interpolating function')
@@ -217,23 +217,23 @@ def plot_R_for_chi_bessel(sm, chi_array,R_array, interp_fn=None,
         shrink = chi_array.shape[0]-classic_approx.shape[0]
         plt.plot(chi_array[shrink:],classic_approx, 'k:', 
                  label='Langbein & Leopold approx')
-    def R_model(chi,a,b):
+    def r_model(chi,a,b):
         return a*(chi+1)**b/(np.sqrt((np.sqrt(chi+1)-1)))
-    popt,pcov = curve_fit(R_model,chi_array[1:],R_array[1:])
+    popt,pcov = curve_fit(r_model,chi_array[1:],r_array[1:])
     print(popt);
-    plt.plot(chi_array[1:],R_model(chi_array[1:],*popt), 'r', dashes=[2, 8], lw=3,
+    plt.plot(chi_array[1:],r_model(chi_array[1:],*popt), 'r', dashes=[2, 8], lw=3,
                  label='Mecklenburg & Jayakaran model fit')
     if data is not None:
         plt.plot(*data[0], 'ko', label=data[1], alpha=0.4, ms=7)
     axes = plt.gca()
     plt.grid(ls=':')
-    plt.ylabel('Non-dimensional radius of curvature  $R/L$   [-]');
+    plt.ylabel('Non-dimensional radius of curvature  $r/L$   [-]');
     plt.xlabel('Sinuosity  $\chi$   [-]');
 #     plt.autoscale(enable=True,tight=True)
     plt.xlim(0,3)
     plt.ylim(0,0.9)
     axes.legend(loc='lower right')
-    sm.figs.update({'R_chi_bessel': fig}) 
+    sm.figs.update({'r_chi_bessel': fig}) 
     
 def plot_omega_for_chi(sm, chi_array,omega_array, 
                        interp_fn=None, closed_form=None, data=None):
@@ -283,12 +283,12 @@ def plot_chi_for_m(sm, m_array,chi_array, interp_fn=None, data=None):
     axes.legend()
     sm.figs.update({'chi_m': fig})
 
-def plot_R_for_chi(sm, L=1000):
+def plot_r_for_chi(sm, L=1000):
     fig = create_fig()
     chi_vec = np.linspace(0.05,3)
-    plt.plot(chi_vec, sm.R_for_chi(chi_vec,L)/L,
+    plt.plot(chi_vec, sm.r_for_chi(chi_vec,L)/L,
                    label='$L={}$'.format(L));
-    plt.ylabel('Radius of curvature  $R(\\chi)/L$   [-]');
+    plt.ylabel('Radius of curvature  $r(\\chi)/L$   [-]');
     plt.xlabel('Sinuosity $\\chi$   [-]');
     axes = plt.gca();
 #     axes.legend()
@@ -299,26 +299,26 @@ def plot_R_for_chi(sm, L=1000):
 #     axes.axvline(x=1.0,alpha=0.5,color='k',
 #                  linewidth=1,linestyle=':');
     plt.grid(ls=':')
-    sm.figs.update({'R_chi': fig})
+    sm.figs.update({'r_chi': fig})
 
-def plot_R_for_R(sm, interp_fn, df):
+def plot_r_for_r(sm, interp_fn, df):
     fig = create_fig(xy_inches=(6.5,6.5))
     plt.plot(interp_fn(df['sinuosity_chi'])*df['wavelength']/2,
-             df['radius_R'],
-             'ko',alpha=0.4, label='Williams 1986 data for $\chi_{obs}$, $R_{obs}$')
-    plt.xlabel('Bessel-Struve SGC model radius of curvature $R_{model}(\chi_{obs})$  [m]')
-    plt.ylabel('Radius of curvature $R_{obs}$  [m]')
+             df['radius_r'],
+             'ko',alpha=0.4, label='Williams 1986 data for $\chi_{obs}$, $r_{obs}$')
+    plt.xlabel('Bessel-Struve SGC model radius of curvature $r_{model}(\chi_{obs})$  [m]')
+    plt.ylabel('Radius of curvature $r_{obs}$  [m]')
     plt.xlim(1,1e4)
     axes = plt.gca()
     axes.set_xscale('log')
     axes.set_yscale('log')
     axes.set_aspect('equal')
     plt.plot(np.arange(*axes.get_xlim()),np.arange(*axes.get_xlim()), 
-             label='$R_{model} = R_{obs}$')
+             label='$r_{model} = r_{obs}$')
     plt.legend();
     plt.grid(ls=':')
     axes.autoscale(enable=True, tight=True);
-    sm.figs.update({'R_R': fig})
+    sm.figs.update({'r_r': fig})
 
 def plot_epsilon_for_chi(sm, w=10,L=1000):
     fig = create_fig()

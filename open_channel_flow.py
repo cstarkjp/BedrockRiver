@@ -6,9 +6,9 @@ from symbols import *
 from utils import *
 
 class basic_mixin():
-    def initialize_hydraulics(self):
+    def initialize_hydraulics(self, friction_model='chezy'):
         print('Initializing open channel flow hydraulics...', end='')
-        self.R_eqn = self.define_R_eqn()
+        self.r_eqn = self.define_r_eqn()
         self.epsilon_eqn = self.define_epsilon_eqn()
         self.d_geometric_eqn = self.solve_d_geometric_eqn()
         self.d_dynamic_eqn = self.raw_d_dynamic_eqn()
@@ -20,8 +20,15 @@ class basic_mixin():
                                 (self.raw_u_geometric_eqn().args[1])**3)        
         self.d_polynomial_eqn = self.d_eqn()
         self.u_polynomial_eqn = self.u_eqn()
+        
+        if friction_model=='chezy':
+            self.friction_eqn = self.friction_eqn_chezy
+#             self.tau_eqn_friction = self.tau_eqn_chezy_friction
+        else:
+            self.friction_eqn = self.friction_eqn_manning
+#             self.tau_eqn_friction = self.tau_eqn_manning_friction
         print('done')
-   
+
 class revised_symbolic_mixin(trig_utils_mixin):
     def A_eqn_geom(self):
         return sy.Eq(A,d*(w+d/sy.tan(theta)))
@@ -32,20 +39,35 @@ class revised_symbolic_mixin(trig_utils_mixin):
     def p_eqn(self):
         return sy.Eq(p, 2*d/sy.sin(theta)+w)
 
+    def R_eqn(self):
+        return sy.Eq(R, self.A_eqn_dyn().rhs/self.p_eqn().rhs).simplify()
+
     def tau_eqn_raw(self):
         return sy.Eq(tau,(rho*g*A*sy.sin(beta)/p).subs(A,self.A_eqn_dyn().rhs))
 
     def tau_eqn_geom(self):
-        return sy.simplify(self.tau_eqn_raw().subs(p,self.p_eqn().rhs))
-
-    def friction_eqn(self):
-        return sy.Eq(f,g*C**2)
+        return self.tau_eqn_raw().subs(p,self.p_eqn().rhs).simplify()
 
     def tau_eqn_friction(self):
         return sy.Eq(tau,f*rho*u**2)
 
+    def friction_eqn_chezy(self):
+        return sy.Eq(f,g*C**2)
+
+#     def tau_eqn_manning_friction(self):
+#         return sy.Eq(tau,rho*g*nm*u**2/R**sy.Rational(1,3))
+
+    def friction_eqn_manning_raw(self):
+        return sy.Eq(f,g*nm/R**sy.Rational(1,3))
+
+    def friction_eqn_manning(self):
+        return self.friction_eqn_manning_raw().subs(R,self.R_eqn().rhs) \
+                .subs(sy.sin(theta)/(2*d+w*sy.sin(theta)),1/t**3) \
+                .subs(t,(2*d+w*sy.sin(theta))**sy.Rational(1,3)
+                      /(sy.sin(theta)**sy.Rational(1,3)))
+
     def tau_eqn_dyn(self):
-        return sy.simplify(self.tau_eqn_friction().subs(f,self.friction_eqn().rhs))
+        return self.tau_eqn_friction().subs(f,self.friction_eqn().rhs).simplify()
 
     def u_star_eqn_raw(self):
         return sy.Eq(u_star, sy.sqrt(tau/rho))
@@ -59,7 +81,7 @@ class revised_symbolic_mixin(trig_utils_mixin):
     def ucubed_eqn_dyn(self):
         ucubed_solns = (sy.solve(sy.Eq(self.tau_eqn_geom().rhs,
                                         self.tau_eqn_dyn().rhs),u**3))
-        return sy.simplify(sy.Eq(u**3,ucubed_solns[0]))
+        return sy.Eq(u**3,ucubed_solns[0]).simplify()
 
     def d_eqn_dyn(self):
         return sy.Eq(d,(sy.solve(self.ucubed_eqn_dyn(),d)[0]).collect(sy.sin(theta)))
