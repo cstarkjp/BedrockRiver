@@ -22,12 +22,16 @@ class basic_mixin():
         self.u_polynomial_eqn = self.u_eqn()
         
         self.friction_model = friction_model
-#         if friction_model=='chezy':
-#             self.friction_eqn = self.friction_eqn_chezy
-#         else:
-#             self.friction_eqn = self.friction_eqn_manning
         print('done')
 
+    def set_friction_model(self, friction_model):
+        if friction_model=='chezy':
+            self.friction_model='chezy'
+        elif friction_model=='manning':
+            self.friction_model='manning'
+        else:
+            raise NameError('Unknown friction model "{}"'.format(friction_model))
+            
 class revised_symbolic_mixin(trig_utils_mixin):
     def A_eqn_geom(self):
         return sy.Eq(A,d*(w+d/sy.tan(theta)))
@@ -54,10 +58,10 @@ class revised_symbolic_mixin(trig_utils_mixin):
         return sy.Eq(f,g*C**2)
 
 #     def tau_eqn_manning_friction(self):
-#         return sy.Eq(tau,rho*g*nm*u**2/R**sy.Rational(1,3))
+#         return sy.Eq(tau,rho*g*n_m*u**2/R**sy.Rational(1,3))
 
     def friction_eqn_manning_raw(self):
-        return sy.Eq(f,g*nm/R**sy.Rational(1,3))
+        return sy.Eq(f,g*n_m**2/R**sy.Rational(1,3))
 
     def friction_eqn_manning(self):
         return self.friction_eqn_manning_raw().subs(R,self.R_eqn().rhs) \
@@ -89,13 +93,16 @@ class revised_symbolic_mixin(trig_utils_mixin):
         return sy.Eq(u**3,ucubed_solns[0]).simplify()
 
     def upower_eqn_dyn_manning(self):
+#         print('upower manning')
         tmp1 = sy.Eq(self.tau_eqn_geom().rhs,self.tau_eqn_dyn().rhs)
         u_eqn = sy.Eq(tmp1.lhs*u,tmp1.rhs*u)
         tmp2 = sy.Eq(u**10,
               (sy.solve(u_eqn.subs(u**sy.Rational(10,3),t),t)[0]
                .subs(t,u**sy.Rational(10,3))**3))
-        return tmp2.subs(sy.Abs(sy.sin(theta)),sy.sin(theta))\
-               .subs(sy.Abs(2*d+w*sy.sin(theta)),2*d+w*sy.sin(theta))
+        return tmp2
+#         return tmp2,tmp1,u_eqn 
+#                .subs(sy.Abs(2*d+w*sy.sin(theta)),2*d+w*sy.sin(theta))
+#                .subs(sy.Abs(sy.sin(theta)),sy.sin(theta))\
 
     def u_eqn_dyn(self):
         if self.friction_model=='chezy':
@@ -104,7 +111,12 @@ class revised_symbolic_mixin(trig_utils_mixin):
             return self.upower_eqn_dyn_manning()
 
     def d_eqn_dyn(self):
-        return sy.Eq(d,(sy.solve(self.ucubed_eqn_dyn(),d)[0]).collect(sy.sin(theta)))
+#         return (sy.solve(self.u_eqn_dyn(),d))
+        if self.friction_model=='chezy':
+            return sy.Eq(d,(sy.solve(self.u_eqn_dyn(),d)[0]).collect(sy.sin(theta)))
+        else:
+            return sy.Eq(d,(sy.solve(self.u_eqn_dyn(),d)[2]).collect(sy.sin(theta)))
+
 
     def d_eqn_geom(self):
         d_soln = sy.Eq(d,sy.simplify(sy.solve(self.u_eqn_geom(),d)[1]))

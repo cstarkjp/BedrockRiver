@@ -7,6 +7,7 @@ from utils import *
 class empty_model():
     def __init__(self, params_dict=None):
         self.default_params_dict = { 
+             g: 10.0,
              Q: 1000.0,
              theta: sy.pi/4,
              phi:   0,
@@ -16,8 +17,9 @@ class empty_model():
              xi_bc: 0,
              beta_0: 0.001,
              C: sy.sqrt(1e-3),
+             n_m: 0.0375,
              w: 100.0,
-             R: 1000.0,
+             R: 2.76,  #1000
              chi: 0.1,
              L: 1000.0,
              W: 50.0,
@@ -58,6 +60,7 @@ class empty_model():
             return result
         else:
             return {
+                g:self.g,
                 Q:self.Q,
                 theta:self.theta, 
                 phi:self.phi, 
@@ -67,6 +70,7 @@ class empty_model():
                 xi_bc:self.xi_bc, 
                 beta_0:self.beta_0, 
                 C:self.C, 
+                n_m:self.n_m, 
                 w:self.w, chi:self.chi,
                 d:self.d, u:self.u, nu:self.nu,
                 u_c:self.u_c, mu:self.mu, Omega_r:self.Omega_r,
