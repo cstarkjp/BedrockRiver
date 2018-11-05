@@ -29,6 +29,8 @@ class basic_mixin():
             self.friction_model='chezy'
         elif friction_model=='manning':
             self.friction_model='manning'
+        elif friction_model=='manning_depth':
+            self.friction_model='manning_depth'
         else:
             raise NameError('Unknown friction model "{}"'.format(friction_model))
             
@@ -69,11 +71,21 @@ class revised_symbolic_mixin(trig_utils_mixin):
                 .subs(t,(2*d+w*sy.sin(theta))**sy.Rational(1,3)
                       /(sy.sin(theta)**sy.Rational(1,3)))
 
+    def friction_eqn_manning_depth(self):
+        return self.friction_eqn_manning_raw().subs(R,d) \
+                .subs(sy.sin(theta)/(2*d+w*sy.sin(theta)),1/t**3) \
+                .subs(t,(2*d+w*sy.sin(theta))**sy.Rational(1,3)
+                      /(sy.sin(theta)**sy.Rational(1,3)))
+
     def friction_eqn(self):
         if self.friction_model=='chezy':
             return self.friction_eqn_chezy()
-        else:
+        elif self.friction_model=='manning':
             return self.friction_eqn_manning()
+        elif self.friction_model=='manning_depth':
+            return self.friction_eqn_manning_depth()
+        else:
+            raise NameError('Unknown friction model "{}"'.format(friction_model))
 
     def tau_eqn_dyn(self):
         return self.tau_eqn_friction().subs(f,self.friction_eqn().rhs).simplify()
@@ -87,36 +99,47 @@ class revised_symbolic_mixin(trig_utils_mixin):
     def u_eqn_geom(self):
         return sy.Eq(u, sy.solve(sy.Eq(self.A_eqn_geom().rhs,self.A_eqn_dyn().rhs),u)[0])
 
-    def ucubed_eqn_dyn_chezy(self):
-        ucubed_solns = (sy.solve(sy.Eq(self.tau_eqn_geom().rhs,
-                                        self.tau_eqn_dyn().rhs),u**3))
-        return sy.Eq(u**3,ucubed_solns[0]).simplify()
+    def u_eqn_dyn_chezy(self):
+        self.u_dyn_expt = 3
+        u_solns = (sy.solve(sy.Eq(self.tau_eqn_geom().rhs,
+                                        self.tau_eqn_dyn().rhs),u**self.u_dyn_expt))
+        return sy.Eq(u**self.u_dyn_expt,u_solns[0]).simplify()
 
-    def upower_eqn_dyn_manning(self):
-#         print('upower manning')
-        tmp1 = sy.Eq(self.tau_eqn_geom().rhs,self.tau_eqn_dyn().rhs)
-        u_eqn = sy.Eq(tmp1.lhs*u,tmp1.rhs*u)
-        tmp2 = sy.Eq(u**10,
-              (sy.solve(u_eqn.subs(u**sy.Rational(10,3),t),t)[0]
-               .subs(t,u**sy.Rational(10,3))**3))
-        return tmp2
-#         return tmp2,tmp1,u_eqn 
-#                .subs(sy.Abs(2*d+w*sy.sin(theta)),2*d+w*sy.sin(theta))
-#                .subs(sy.Abs(sy.sin(theta)),sy.sin(theta))\
+    def u_eqn_dyn_manning(self):
+        self.u_dyn_expt = 5
+        u_eqn = sy.Eq(self.tau_eqn_geom().rhs*u,self.tau_eqn_dyn().rhs*u)
+        return sy.Eq(u**self.u_dyn_expt,
+              (sy.solve(u_eqn.subs(u**sy.Rational(self.u_dyn_expt*2,3),t),t)[0]
+               .subs(t,u**sy.Rational(self.u_dyn_expt*2,3))**3)**sy.Rational(1,2))
+
+    def u_eqn_dyn_manning_depth(self):
+        self.u_dyn_expt = 3
+        u_solns = (sy.solve(sy.Eq(self.tau_eqn_geom().rhs,
+                                        self.tau_eqn_dyn().rhs),u**self.u_dyn_expt))
+        return sy.Eq(u**self.u_dyn_expt,u_solns[0]).simplify()
 
     def u_eqn_dyn(self):
         if self.friction_model=='chezy':
-            return self.ucubed_eqn_dyn_chezy()
+            return self.u_eqn_dyn_chezy()
+        elif self.friction_model=='manning':
+            return self.u_eqn_dyn_manning()
+        elif self.friction_model=='manning_depth':
+            return self.u_eqn_dyn_manning_depth()
         else:
-            return self.upower_eqn_dyn_manning()
+            raise NameError('Unknown friction model "{}"'.format(friction_model))
 
     def d_eqn_dyn(self):
-#         return (sy.solve(self.u_eqn_dyn(),d))
         if self.friction_model=='chezy':
             return sy.Eq(d,(sy.solve(self.u_eqn_dyn(),d)[0]).collect(sy.sin(theta)))
+        elif self.friction_model=='manning':
+            return sy.Eq(d,(sy.solve(self.u_eqn_dyn(),d)[1]).collect(sy.sin(theta)))
+        elif self.friction_model=='manning_depth':
+            d_eqn = sy.Eq( (self.u_eqn_dyn().lhs*(2*d+w*sy.sin(theta))*n_m**2)**3,
+                           (self.u_eqn_dyn().rhs*(2*d+w*sy.sin(theta))*n_m**2)**3 )
+            solns = sy.solve(d_eqn,d)
+            return sy.Eq(d,solns[1])
         else:
-            return sy.Eq(d,(sy.solve(self.u_eqn_dyn(),d)[2]).collect(sy.sin(theta)))
-
+            raise NameError('Unknown friction model "{}"'.format(friction_model))
 
     def d_eqn_geom(self):
         d_soln = sy.Eq(d,sy.simplify(sy.solve(self.u_eqn_geom(),d)[1]))
@@ -124,12 +147,26 @@ class revised_symbolic_mixin(trig_utils_mixin):
                      .subs(t,sy.tan(theta)))
 
     def d_eqn_poly(self):
-        d_eqn = sy.Eq(1/self.u_eqn_geom().rhs**3,1/(self.ucubed_eqn_dyn().rhs))
+        if self.friction_model=='chezy':
+            d_eqn = sy.Eq(1/self.u_eqn_geom().rhs**self.u_dyn_expt,
+                          1/(self.u_eqn_dyn_chezy().rhs))
+        elif self.friction_model=='manning':
+            d_eqn = sy.Eq(1/self.u_eqn_geom().rhs**self.u_dyn_expt,
+                          1/(self.u_eqn_dyn_manning().rhs))
+        else:
+            raise NameError('Unknown friction model "{}"'.format(friction_model))
         return sy.Eq(d_eqn.as_poly(d).args[0])
 
     def u_eqn_poly(self):
         u_eqn = sy.Eq(self.d_eqn_geom().rhs,self.d_eqn_dyn().rhs)
-        return sy.Eq(u_eqn.as_poly(1/sy.sqrt(u)).args[0])
+        if self.friction_model=='chezy':
+            return sy.Eq(u_eqn.as_poly(1/sy.sqrt(u)).args[0]*u**3)
+        elif self.friction_model=='manning':
+            tmp = u_eqn.as_poly(1/sy.sqrt(u)).args[0]
+            return sy.Eq((tmp.subs(u,t**2)*t**5).simplify().subs(t,sy.sqrt(u))
+                         *n_m**sy.Rational(3,2))
+        else:
+            raise NameError('Unknown friction model "{}"'.format(friction_model))
 
 #     def x(self):
 #         return xxxxx

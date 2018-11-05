@@ -17,7 +17,7 @@ class empty_model():
              xi_bc: 0,
              beta_0: 0.001,
              C: sy.sqrt(1e-3),
-             n_m: 0.0375,
+             n_m: 0.03,
              w: 100.0,
              R: 2.76,  #1000
              chi: 0.1,
