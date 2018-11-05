@@ -8,20 +8,20 @@ from utils import *
 class basic_mixin():
     def initialize_hydraulics(self, friction_model='chezy'):
         print('Initializing open channel flow hydraulics...', end='')
-        self.r_eqn = self.define_r_eqn()
-        self.epsilon_eqn = self.define_epsilon_eqn()
-        self.d_geometric_eqn = self.solve_d_geometric_eqn()
-        self.d_dynamic_eqn = self.raw_d_dynamic_eqn()
-        self.u_geometric_eqn = self.raw_u_geometric_eqn()
-        self.ucubed_dynamic_eqn = self.raw_ucubed_dynamic_eqn()
-        self.u_eqn_rect = self.solve_u_eqn_rect()
-        self.d_eqn_rect = self.solve_d_eqn_rect()
-        self.du_eqn = sy.Eq(self.raw_ucubed_dynamic_eqn().args[1],
-                                (self.raw_u_geometric_eqn().args[1])**3)        
-        self.d_polynomial_eqn = self.d_eqn()
-        self.u_polynomial_eqn = self.u_eqn()
+#         self.r_eqn = self.define_r_eqn()
+#         self.epsilon_eqn = self.define_epsilon_eqn()
+#         self.d_geometric_eqn = self.solve_d_geometric_eqn()
+#         self.d_dynamic_eqn = self.raw_d_dynamic_eqn()
+#         self.u_geometric_eqn = self.raw_u_geometric_eqn()
+#         self.ucubed_dynamic_eqn = self.raw_ucubed_dynamic_eqn()
+#         self.u_eqn_rect = self.solve_u_eqn_rect()
+#         self.d_eqn_rect = self.solve_d_eqn_rect()
+#         self.du_eqn = sy.Eq(self.raw_ucubed_dynamic_eqn().args[1],
+#                                 (self.raw_u_geometric_eqn().args[1])**3)        
+#         self.d_polynomial_eqn = self.d_eqn()
+#         self.u_polynomial_eqn = self.u_eqn()
         
-        self.friction_model = friction_model
+        self.set_friction_model(friction_model)
         print('done')
 
     def set_friction_model(self, friction_model):
@@ -160,7 +160,7 @@ class revised_symbolic_mixin(trig_utils_mixin):
     def u_eqn_poly(self):
         u_eqn = sy.Eq(self.d_eqn_geom().rhs,self.d_eqn_dyn().rhs)
         if self.friction_model=='chezy':
-            return sy.Eq(u_eqn.as_poly(1/sy.sqrt(u)).args[0]*u**3)
+            return sy.Eq(u_eqn.as_poly(1/sy.sqrt(u)).args[0]*u**3).expand()
         elif self.friction_model=='manning':
             tmp = u_eqn.as_poly(1/sy.sqrt(u)).args[0]
             return sy.Eq((tmp.subs(u,t**2)*t**5).simplify().subs(t,sy.sqrt(u))
@@ -168,13 +168,47 @@ class revised_symbolic_mixin(trig_utils_mixin):
         else:
             raise NameError('Unknown friction model "{}"'.format(friction_model))
 
-#     def x(self):
-#         return xxxxx
-# 
-#     def x(self):
-#         return xxxxx
+    def specify_d_polynomial_constants(self, params_dict_update):
+        params_dict = self.get_params()
+        params_dict.update({d:d})
+        if params_dict_update!={}:
+            params_dict.update(params_dict_update)
+        self.d_polynomial_specified = self.d_eqn_poly().subs(params_dict)
+        return self.d_polynomial_specified
 
+    def specify_u_polynomial_constants(self, params_dict_update):
+        params_dict = self.get_params()
+        params_dict.update({u:u})
+        if params_dict_update!={}:
+            params_dict.update(params_dict_update)
+        self.u_polynomial_specified = self.u_eqn_poly().subs(params_dict)
+        return self.u_polynomial_specified
 
+    def set_ud_lambdas(self, constants_dict_update={beta:beta_0}):
+        from sympy import sqrt
+        params_dict = {w:w,theta:theta}
+        constants_dict = params_dict
+        if constants_dict_update!={}:
+            constants_dict.update(constants_dict_update)
+        u_eqn = self.specify_u_polynomial_constants(constants_dict).args[0]
+        d_eqn = self.specify_d_polynomial_constants(constants_dict).args[0]
+        self.u_poly_lambda = sy.utilities.lambdify(((u,w,theta),), u_eqn, 'sympy')
+        self.d_poly_lambda = sy.utilities.lambdify(((d,w,theta),), d_eqn, "sympy")
+        return sy.Eq(d,d_eqn),sy.Eq(u,u_eqn)
+    
+    def u_for_w_theta(self, u,w,theta):
+        from numpy import sqrt
+        return np.float64(sy.Abs(self.u_poly_lambda([u,w,theta])))
+
+    def d_for_w_theta(self, d,w,theta):
+        return np.float64(self.d_poly_lambda([d,w,theta]))
+    
+    def nsolve_u_d_for_w_theta(self, w,theta):
+        self.u_init = np.float64(self.u_i)
+        self.d_init = np.float64(self.d_i)
+        ux = newton(self.u_for_w_theta,self.u_init, args=[w,theta])
+        dx = newton(self.d_for_w_theta,self.d_init, args=[w,theta])
+        return ux,dx  
 
 class new_symbolic_mixin(trig_utils_mixin):
     def raw_d_dynamic_eqn(self):
@@ -248,7 +282,8 @@ class new_symbolic_mixin(trig_utils_mixin):
         d_eqn = self.specify_d_polynomial_constants({w:w,chi:chi}).args[0]
         self.u_lambda = sy.utilities.lambdify(((u,w,chi),), u_eqn, 'sympy')
         self.d_lambda = sy.utilities.lambdify(((d,w,chi),), d_eqn, "sympy")        
-    
+
+
 class new_numerical_mixin(trig_utils_mixin, hydraulics_utils_mixin):
     def root_u_polynomial(self, params_dict, u_0=10):
         return np.float64(
