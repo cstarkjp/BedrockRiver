@@ -80,7 +80,6 @@ class empty_model():
             params_list =  {
                 'g',
                 'Q',
-                'phi', 
                 'beta_0', 
                 'C', 
                 'n_m', 
