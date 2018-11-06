@@ -1,9 +1,8 @@
 import numpy as np
 import sympy as sy
 
-# from symbols import *
+from symbols import *
 from utils import *
-import symbols as sym
 
 class empty_model():
     def __init__(self, params_dict=None):
@@ -48,8 +47,8 @@ class empty_model():
             tau: tau,
             tau_star: tau_star,
             u_star: u_star,
-            tau_star_fine: sym.tau_star_fine,
-            tau_star_coarse: sym.tau_star_coarse,
+            tau_star_fine: tau_star_fine,
+            tau_star_coarse: tau_star_coarse,
             tau_star_c: 0.04,
             nu: 1,
             u_c: 0.0,
