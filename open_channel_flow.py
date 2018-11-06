@@ -194,7 +194,7 @@ class revised_symbolic_mixin(trig_utils_mixin):
         d_eqn = self.specify_d_polynomial_constants(constants_dict).args[0]
         self.u_poly_lambda = sy.utilities.lambdify(((u,w,theta),), u_eqn, 'sympy')
         self.d_poly_lambda = sy.utilities.lambdify(((d,w,theta),), d_eqn, "sympy")
-        return sy.Eq(d,d_eqn),sy.Eq(u,u_eqn)
+        return #sy.Eq(d,d_eqn),sy.Eq(u,u_eqn)
     
     def u_for_w_theta(self, u,w,theta):
         from numpy import sqrt
