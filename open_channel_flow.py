@@ -1,5 +1,6 @@
 import numpy as np                  
 import sympy as sy
+from sympy import Eq
 from scipy.optimize import newton
 
 from symbols import *
@@ -16,7 +17,7 @@ class basic_mixin():
 #         self.ucubed_dynamic_eqn = self.raw_ucubed_dynamic_eqn()
 #         self.u_eqn_rect = self.solve_u_eqn_rect()
 #         self.d_eqn_rect = self.solve_d_eqn_rect()
-#         self.du_eqn = sy.Eq(self.raw_ucubed_dynamic_eqn().args[1],
+#         self.du_eqn = Eq(self.raw_ucubed_dynamic_eqn().args[1],
 #                                 (self.raw_u_geometric_eqn().args[1])**3)        
 #         self.d_polynomial_eqn = self.d_eqn()
 #         self.u_polynomial_eqn = self.u_eqn()
@@ -36,34 +37,34 @@ class basic_mixin():
             
 class revised_symbolic_mixin(trig_utils_mixin):
     def A_eqn_geom(self):
-        return sy.Eq(A,d*(w+d/sy.tan(theta)))
+        return Eq(A,d*(w+d/sy.tan(theta)))
 
     def A_eqn_dyn(self):
-        return sy.Eq(A,Q/u)
+        return Eq(A,Q/u)
 
     def p_eqn(self):
-        return sy.Eq(p, 2*d/sy.sin(theta)+w)
+        return Eq(p, 2*d/sy.sin(theta)+w)
 
     def R_eqn(self):
-        return sy.Eq(R, self.A_eqn_dyn().rhs/self.p_eqn().rhs).simplify()
+        return Eq(R, self.A_eqn_dyn().rhs/self.p_eqn().rhs).simplify()
 
     def tau_eqn_raw(self):
-        return sy.Eq(tau,(rho*g*A*sy.sin(beta)/p).subs(A,self.A_eqn_dyn().rhs))
+        return Eq(tau,(rho*g*A*sy.sin(beta)/p).subs(A,self.A_eqn_dyn().rhs))
 
     def tau_eqn_geom(self):
         return self.tau_eqn_raw().subs(p,self.p_eqn().rhs).simplify()
 
     def tau_eqn_friction(self):
-        return sy.Eq(tau,f*rho*u**2)
+        return Eq(tau,f*rho*u**2)
 
     def friction_eqn_chezy(self):
-        return sy.Eq(f,g*C**2)
+        return Eq(f,g*C**2)
 
 #     def tau_eqn_manning_friction(self):
-#         return sy.Eq(tau,rho*g*n_m*u**2/R**sy.Rational(1,3))
+#         return Eq(tau,rho*g*n_m*u**2/R**sy.Rational(1,3))
 
     def friction_eqn_manning_raw(self):
-        return sy.Eq(f,g*n_m**2/R**sy.Rational(1,3))
+        return Eq(f,g*n_m**2/R**sy.Rational(1,3))
 
     def friction_eqn_manning(self):
         return self.friction_eqn_manning_raw().subs(R,self.R_eqn().rhs) \
@@ -91,32 +92,32 @@ class revised_symbolic_mixin(trig_utils_mixin):
         return self.tau_eqn_friction().subs(f,self.friction_eqn().rhs).simplify()
 
     def u_star_eqn_raw(self):
-        return sy.Eq(u_star, sy.sqrt(tau/rho))
+        return Eq(u_star, sy.sqrt(tau/rho))
 
     def u_star_eqn(self):
         return self.u_star_eqn_raw().subs(tau,self.tau_eqn_dyn().rhs)
 
     def u_eqn_geom(self):
-        return sy.Eq(u, sy.solve(sy.Eq(self.A_eqn_geom().rhs,self.A_eqn_dyn().rhs),u)[0])
+        return Eq(u, sy.solve(Eq(self.A_eqn_geom().rhs,self.A_eqn_dyn().rhs),u)[0])
 
     def u_eqn_dyn_chezy(self):
         self.u_dyn_expt = 3
-        u_solns = (sy.solve(sy.Eq(self.tau_eqn_geom().rhs,
+        u_solns = (sy.solve(Eq(self.tau_eqn_geom().rhs,
                                         self.tau_eqn_dyn().rhs),u**self.u_dyn_expt))
-        return sy.Eq(u**self.u_dyn_expt,u_solns[0]).simplify()
+        return Eq(u**self.u_dyn_expt,u_solns[0]).simplify()
 
     def u_eqn_dyn_manning(self):
         self.u_dyn_expt = 5
-        u_eqn = sy.Eq(self.tau_eqn_geom().rhs*u,self.tau_eqn_dyn().rhs*u)
-        return sy.Eq(u**self.u_dyn_expt,
+        u_eqn = Eq(self.tau_eqn_geom().rhs*u,self.tau_eqn_dyn().rhs*u)
+        return Eq(u**self.u_dyn_expt,
               (sy.solve(u_eqn.subs(u**sy.Rational(self.u_dyn_expt*2,3),t),t)[0]
                .subs(t,u**sy.Rational(self.u_dyn_expt*2,3))**3)**sy.Rational(1,2))
 
     def u_eqn_dyn_manning_depth(self):
         self.u_dyn_expt = 3
-        u_solns = (sy.solve(sy.Eq(self.tau_eqn_geom().rhs,
+        u_solns = (sy.solve(Eq(self.tau_eqn_geom().rhs,
                                         self.tau_eqn_dyn().rhs),u**self.u_dyn_expt))
-        return sy.Eq(u**self.u_dyn_expt,u_solns[0]).simplify()
+        return Eq(u**self.u_dyn_expt,u_solns[0]).simplify()
 
     def u_eqn_dyn(self):
         if self.friction_model=='chezy':
@@ -130,40 +131,40 @@ class revised_symbolic_mixin(trig_utils_mixin):
 
     def d_eqn_dyn(self):
         if self.friction_model=='chezy':
-            return sy.Eq(d,(sy.solve(self.u_eqn_dyn(),d)[0]).collect(sy.sin(theta)))
+            return Eq(d,(sy.solve(self.u_eqn_dyn(),d)[0]).collect(sy.sin(theta)))
         elif self.friction_model=='manning':
-            return sy.Eq(d,(sy.solve(self.u_eqn_dyn(),d)[1]).collect(sy.sin(theta)))
+            return Eq(d,(sy.solve(self.u_eqn_dyn(),d)[1]).collect(sy.sin(theta)))
         elif self.friction_model=='manning_depth':
-            d_eqn = sy.Eq( (self.u_eqn_dyn().lhs*(2*d+w*sy.sin(theta))*n_m**2)**3,
+            d_eqn = Eq( (self.u_eqn_dyn().lhs*(2*d+w*sy.sin(theta))*n_m**2)**3,
                            (self.u_eqn_dyn().rhs*(2*d+w*sy.sin(theta))*n_m**2)**3 )
             solns = sy.solve(d_eqn,d)
-            return sy.Eq(d,solns[1])
+            return Eq(d,solns[1])
         else:
             raise NameError('Unknown friction model "{}"'.format(friction_model))
 
     def d_eqn_geom(self):
-        d_soln = sy.Eq(d,sy.simplify(sy.solve(self.u_eqn_geom(),d)[1]))
-        return sy.Eq(d,d_soln.rhs.subs(sy.tan(theta),t).simplify().collect(t) \
+        d_soln = Eq(d,sy.simplify(sy.solve(self.u_eqn_geom(),d)[1]))
+        return Eq(d,d_soln.rhs.subs(sy.tan(theta),t).simplify().collect(t) \
                      .subs(t,sy.tan(theta)))
 
     def d_eqn_poly(self):
         if self.friction_model=='chezy':
-            d_eqn = sy.Eq(1/self.u_eqn_geom().rhs**self.u_dyn_expt,
+            d_eqn = Eq(1/self.u_eqn_geom().rhs**self.u_dyn_expt,
                           1/(self.u_eqn_dyn_chezy().rhs))
         elif self.friction_model=='manning':
-            d_eqn = sy.Eq(1/self.u_eqn_geom().rhs**self.u_dyn_expt,
+            d_eqn = Eq(1/self.u_eqn_geom().rhs**self.u_dyn_expt,
                           1/(self.u_eqn_dyn_manning().rhs))
         else:
             raise NameError('Unknown friction model "{}"'.format(friction_model))
-        return sy.Eq(d_eqn.as_poly(d).args[0])
+        return Eq(d_eqn.as_poly(d).args[0])
 
     def u_eqn_poly(self):
-        u_eqn = sy.Eq(self.d_eqn_geom().rhs,self.d_eqn_dyn().rhs)
+        u_eqn = Eq(self.d_eqn_geom().rhs,self.d_eqn_dyn().rhs)
         if self.friction_model=='chezy':
-            return sy.Eq(u_eqn.as_poly(1/sy.sqrt(u)).args[0]*u**3).expand()
+            return Eq(u_eqn.as_poly(1/sy.sqrt(u)).args[0]*u**3).expand()
         elif self.friction_model=='manning':
             tmp = u_eqn.as_poly(1/sy.sqrt(u)).args[0]
-            return sy.Eq((tmp.subs(u,t**2)*t**5).simplify().subs(t,sy.sqrt(u))
+            return Eq((tmp.subs(u,t**2)*t**5).simplify().subs(t,sy.sqrt(u))
                          *n_m**sy.Rational(3,2))
         else:
             raise NameError('Unknown friction model "{}"'.format(friction_model))
@@ -194,7 +195,7 @@ class revised_symbolic_mixin(trig_utils_mixin):
         d_eqn = self.specify_d_polynomial_constants(constants_dict).args[0]
         self.u_poly_lambda = sy.utilities.lambdify(((u,w,theta),), u_eqn, 'sympy')
         self.d_poly_lambda = sy.utilities.lambdify(((d,w,theta),), d_eqn, "sympy")
-        return #sy.Eq(d,d_eqn),sy.Eq(u,u_eqn)
+        return #Eq(d,d_eqn),Eq(u,u_eqn)
     
     def u_for_w_theta(self, u,w,theta):
         from numpy import sqrt
@@ -212,12 +213,12 @@ class revised_symbolic_mixin(trig_utils_mixin):
 
 class new_symbolic_mixin(trig_utils_mixin):
     def raw_d_dynamic_eqn(self):
-        return sy.Eq(d, 
+        return Eq(d, 
 #             ((Q*sy.sin(beta_0))/(C**2*u**3)-w)*(sy.sin(theta)/2) )
             sy.simplify(((Q*sy.sin(beta_0))/(C**2*u**3)-w)*(sy.sin(theta)/2)))
 
     def raw_d_geometric_eqn(self, d, u,w,Q,theta):
-        return sy.Eq((u*sy.cot(theta))*d**2 +u*w*d - Q, 0)
+        return Eq((u*sy.cot(theta))*d**2 +u*w*d - Q, 0)
     
     def solve_d_geometric_eqn(self):
         cottheta = sy.symbols('c_theta', real=True, positive=True )
@@ -225,18 +226,18 @@ class new_symbolic_mixin(trig_utils_mixin):
         d_geometric_solns = sy.solveset( eq1, d )
         d_geometric_soln = sy.simplify(d_geometric_solns.args[1].subs(
                                                     cottheta,1/sy.tan(theta)))
-        return sy.Eq(d,d_geometric_soln)
+        return Eq(d,d_geometric_soln)
 
     def solve_u_geometric_eqn(self, d_geometric_eqn):
         u_geometric_solns = sy.solveset( d_geometric_eqn, u, domain=sy.S.Reals )
         u_geometric_soln = sy.simplify(u_geometric_solns.args[0].args[0])
-        return sy.Eq(u,u_geometric_soln)
+        return Eq(u,u_geometric_soln)
 
     def raw_u_geometric_eqn(self):
-        return sy.Eq(u, sy.simplify(Q/(w*d+(d**2)/sy.tan(theta)) ))
+        return Eq(u, sy.simplify(Q/(w*d+(d**2)/sy.tan(theta)) ))
 
     def raw_ucubed_dynamic_eqn(self):
-        return sy.Eq(u**3, sy.simplify(Q*(sy.sin(beta_0)/(chi+1)))
+        return Eq(u**3, sy.simplify(Q*(sy.sin(beta_0)/(chi+1)))
                                        /(C**2*(w+2*d/sy.sin(theta)) ))
         
     def d_eqn(self):
@@ -248,16 +249,16 @@ class new_symbolic_mixin(trig_utils_mixin):
         full_u_soln = sy.solveset(eqn,u)
         u_soln = sy.simplify(full_u_soln.args[0].args[1]).args[0]/64/Q**2
         u_soln = sy.simplify(sy.expand(u_soln/sy.sqrt(u)))
-        return sy.Eq(u_soln)
+        return Eq(u_soln)
     
     def solve_u_eqn_rect(self):
         u3_eqn = self.ucubed_dynamic_eqn.subs(theta,sy.pi/2).args[1]
         u2_eqn = sy.simplify(((2*d+w)*(u**2-u3_eqn)).subs(d,Q/(w*u))/u)
-        return sy.Eq(u,sy.solve(sy.Eq(sy.numer(u2_eqn)),u)[1])
+        return Eq(u,sy.solve(Eq(sy.numer(u2_eqn)),u)[1])
     
     def solve_d_eqn_rect(self):
         d_eqn_rect = sy.simplify((Q/(u*w)).subs(u,self.u_eqn_rect.args[1]))
-        return sy.Eq( d,
+        return Eq( d,
             sy.simplify(d_eqn_rect.subs(Q,t**2)).cancel().subs(t,sy.sqrt(Q)) )
 
     def specify_u_polynomial_constants(self, params_dict_update):
@@ -306,17 +307,13 @@ class new_numerical_mixin(trig_utils_mixin, hydraulics_utils_mixin):
 
     def d_for_w_chi(self, d,w,chi):
         d = self.d_lambda([d,w,chi])
-#         print(d)
         return d
     
     def nsolve_u_d_for_w_chi(self, w,chi):
-#         warnings.simplefilter('ignore')
         self.u_init = np.float64(self.u_i)
         self.d_init = np.float64(self.d_i)
         ux = newton(self.u_for_w_chi,self.u_init, args=[w,chi])
         dx = newton(self.d_for_w_chi,self.d_init, args=[w,chi])
-#         if w>100 and w<101 and chi>0.66 and chi<0.67:
-#             print(w,chi,' : ',ux,dx)
         return ux,dx  
 
     def nsolve_u_d_for_w_chi_fast(self, w,chi):
@@ -472,12 +469,12 @@ class old_numerical_mixin(trig_utils_mixin, hydraulics_utils_mixin):
         
 class old_symbolic_mixin(trig_utils_mixin):
     def raw_d_dynamic_eqn(self):
-        return sy.Eq(d, 
+        return Eq(d, 
 #             ((Q*sy.sin(beta_0))/(C**2*u**3)-w)*(sy.sin(theta)/2) )
             sy.simplify(((Q*sy.sin(beta_0))/(C**2*u**3)-w)*(sy.sin(theta)/2)))
 
     def raw_d_geometric_eqn(self, d, u,w,Q,theta):
-        return sy.Eq((u*sy.cot(theta))*d**2 +u*w*d - Q, 0)
+        return Eq((u*sy.cot(theta))*d**2 +u*w*d - Q, 0)
     
     def solve_d_geometric_eqn(self):
         cottheta = sy.symbols('c_theta', real=True, positive=True )
@@ -485,18 +482,18 @@ class old_symbolic_mixin(trig_utils_mixin):
         d_geometric_solns = sy.solveset( eq1, d )
         d_geometric_soln = sy.simplify(d_geometric_solns.args[1].subs(
                                                     cottheta,1/sy.tan(theta)))
-        return sy.Eq(d,d_geometric_soln)
+        return Eq(d,d_geometric_soln)
 
     def solve_u_geometric_eqn(self, d_geometric_eqn):
         u_geometric_solns = sy.solveset( d_geometric_eqn, u, domain=sy.S.Reals )
         u_geometric_soln = sy.simplify(u_geometric_solns.args[0].args[0])
-        return sy.Eq(u,u_geometric_soln)
+        return Eq(u,u_geometric_soln)
 
     def raw_u_geometric_eqn(self):
-        return sy.Eq(u, sy.simplify(Q/(w*d+(d**2)/sy.tan(theta)) ))
+        return Eq(u, sy.simplify(Q/(w*d+(d**2)/sy.tan(theta)) ))
 
     def raw_ucubed_dynamic_eqn(self):
-        return sy.Eq(u**3, sy.simplify(Q*(sy.sin(beta_0)/(chi+1)))
+        return Eq(u**3, sy.simplify(Q*(sy.sin(beta_0)/(chi+1)))
                                        /(C**2*(w+2*d/sy.sin(theta)) ))
         
     def d_eqn(self):
@@ -508,16 +505,16 @@ class old_symbolic_mixin(trig_utils_mixin):
         full_u_soln = sy.solveset(eqn,u)
         u_soln = sy.simplify(full_u_soln.args[0].args[1]).args[0]/64/Q**2
         u_soln = sy.simplify(sy.expand(u_soln/sy.sqrt(u)))
-        return sy.Eq(u_soln)
+        return Eq(u_soln)
     
     def solve_u_eqn_rect(self):
         u3_eqn = self.ucubed_dynamic_eqn.subs(theta,sy.pi/2).args[1]
         u2_eqn = sy.simplify(((2*d+w)*(u**2-u3_eqn)).subs(d,Q/(w*u))/u)
-        return sy.Eq(u,sy.solve(sy.Eq(sy.numer(u2_eqn)),u)[1])
+        return Eq(u,sy.solve(Eq(sy.numer(u2_eqn)),u)[1])
     
     def solve_d_eqn_rect(self):
         d_eqn_rect = sy.simplify((Q/(u*w)).subs(u,self.u_eqn_rect.args[1]))
-        return sy.Eq( d,
+        return Eq( d,
             sy.simplify(d_eqn_rect.subs(Q,t**2)).cancel().subs(t,sy.sqrt(Q)) )
 
     def specify_u_polynomial_constants(self, params_dict_update):

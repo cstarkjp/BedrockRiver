@@ -14,7 +14,6 @@ from wear import bedrock_wear_mixin
 class new_model(bedrock_wear_mixin, sediment_transport_mixin, 
                 open_channel_flow.new_numerical_mixin, 
                 open_channel_flow.revised_symbolic_mixin,
-#                 open_channel_flow.new_symbolic_mixin,
                 open_channel_flow.basic_mixin, 
                 bend_mixin, switch_utils_mixin, 
                 basic.empty_model):
@@ -57,8 +56,6 @@ class new_model(bedrock_wear_mixin, sediment_transport_mixin,
 
     def dmdt_for_dcdt(self, dcdt_plus_array,dcdt_minus_array):
         return ((dcdt_plus_array-dcdt_minus_array)/2)#*np.sign(c_plus_array-c_minus_array)
-
-
 
 
 
