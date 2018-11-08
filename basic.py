@@ -30,6 +30,8 @@ class empty_model():
             D_coarse: 20.0e-3,
             tau_star_c: 0.04,
             nu: 1e-3/1000.0, # 1.308e-3/1000.0 @ 10ºC, rho=1000
+            E_star: E_star,
+            F: F,
             phi:   phi,
             theta: theta,
             beta: beta,
