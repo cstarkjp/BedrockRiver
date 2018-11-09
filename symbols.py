@@ -19,14 +19,14 @@ tau_star_fine    = sy.symbols('tau^*_fine',  positive=True)
 tau_star_coarse  = sy.symbols('tau^*_coarse',  positive=True)
 u_star  = sy.symbols('u^*',  positive=True)
 
-q_bc, q_b  = sy.symbols('q_bc, q_b',  positive=True)
+q_bc, q_b, q_s  = sy.symbols('q_bc q_b q_s',  positive=True)
 q_star_bc  = sy.symbols('q^*_bc',  positive=True)
 
 
 f, C, Cz, g = sy.symbols('f C C_Z g',positive=True) 
 rho, rho_s = sy.symbols('rho rho_s',positive=True) 
-rho_Delta = sy.symbols('rho_Delta',positive=True) 
-rho_star_Delta = sy.symbols('rho^*_Delta',positive=True) 
+rho_Delta = sy.symbols('\\Delta\\rho',positive=True) 
+rho_star_Delta = sy.symbols('\\Delta\\rho^*',positive=True) 
 D_fine, D_coarse, D_50 = sy.symbols('D_fine D_coarse D_50',positive=True) 
 n_m = sy.symbols('n_m',positive=True) 
 u, u_root = sy.symbols('u u_root', positive=True)
